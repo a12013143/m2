@@ -1,0 +1,56 @@
+    <!-- Page content -->
+    <div class="container mt--12">
+      <div class="row align-items-center py-4 mt--250">
+        <div class="col-lg-6 col-5">
+          <h1 class="font-weight-bold text-white">{{title}}</h1>
+          <!-- Search and filter -->
+          <form id="select-articles" method="get" action="/articles/"> 
+            <div class="row">
+              <div class="form-group col-lg-5 col-11">
+                <input type="text" class="form-control" name="keyword" id="input-keyword" placeholder="Keyword" value="{{condition.keyword}}">
+              </div>
+              {{#if categories}}
+              <div class="form-group col-lg-5 col-11">
+                <select class="form-control" id="input-category" name="category">
+                  <option id="0">{{this.ID}}</option>
+                  {{#each categories}}                     
+                     <option  {{#eq this.ID ../condition.category}} selected {{/eq}}  value="{{this.ID}}">{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              {{/if}}
+              <div class="form-group col-lg-1 col-1">
+                <button type="Submit" class="btn btn-primary">Filter</button>
+              </div>
+            </div>
+          </form>
+          <a href="/articles/new" class="btn btn-sm btn-neutral">Post new article</a>
+        </div>
+      </div>
+      <div class="row py-6 py-lg-6 pt-lg-6">
+        {{#if articles}}
+        {{#each articles}}
+            <div class="col-xl-4 col-md-6">
+              <div class="card">
+                <!-- Card body -->
+                <div class="card-img-250" style="background-image:url('{{this.profile_img_url}}')">
+                  {{!-- <img class="card-img-top" src="{{this.profile_img_url}}" alt="{{this.article_name}}"> --}}
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">{{this.name}}</h5>
+                  <h5 class="card-author">{{this.author}}</h5>
+                  <p class="card-text">{{this.short_desc}}</p>
+                  <a href="/articles/{{this.ID}}" class="btn btn-primary">Read more</a>
+                </div>
+              </div>
+            </div>
+        {{/each}}
+        {{else}}
+         <div class="col-xl-4 col-md-6">
+              <div class="card">
+                No articles found!
+              </div>
+         </div>
+         {{/if}}
+      </div>
+    </div>

@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  web:
+    container_name: web_service
+    volumes:
+      - db_data:/data/
+      - nodes:/node_modules/
+    build: .
+    ports:
+      - '8000:3000' 
+    restart: unless-stopped
+    
+volumes:
+    db_data: {}
+    nodes: {}
+   
+

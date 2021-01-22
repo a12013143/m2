@@ -1,0 +1,137 @@
+
+    <!-- Page content -->
+    <div class="container mt--6">
+      <div class="row align-items-center py-4 mt--250">
+        <div class="col-lg-6 col-5">
+            <h1 class="font-weight-bold text-white">{{title}}</h1>
+        </div>
+      </div>
+      <div class="row">
+        {{#gt article.ID 0}}
+        <div class="col-xl-12 order-xl-1">
+          <div class="card card-profile shadow-none mb- d-block text-center pt-4">
+            <img src="{{article.profile_img_url}}" alt="Image placeholder" class="card-img-top" style="max-width:100%; width:auto; max-height:550px;" >
+   
+            <div class="card-body pb-0">
+              <div class="row">
+                <div class="col-6 text-left">
+                    <p class="">
+                        <span class="description"><i class="ni calendar mr-2"></i>{{article.author}} ,</span> 
+                        <span class="description"><i class="ni calendar mr-2"></i>{{article.updated_at}}</span>
+                   </p>
+                </div>
+                {{!-- <div class="col-6 pb-0 text-right">
+                    <p class=""> 
+                      <span class="heading d-inline">{{article.likes}}</span>  <span class="description">Likes</span>
+                    </p>
+                </div> --}}
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/gt}}
+        <div class="col-xl-12 order-xl-1">
+          <div class="card shadow-none mt-0">
+          <div class="tab-content">
+            <div id="edit" class="tab-pane tab-example-result fade {{#eq article.ID 0}}active show{{/eq}}" role="tabpanel" aria-labelledby="alerts-edit-tab">
+
+               <!-- Alerts -->
+              <div class="alert alert-success m-4 d-none" role="alert">
+              This is a success alert—check it out!
+              </div>
+              <form id="{{#if article.name }}edit{{else}}add{{/if}}-article-form" role="form" method="{{#if article.name }}put{{else}}post{{/if}}" action="/articles/{{#if article.name }}{{article.ID}}{{/if}}" enctype="multipart/form-data">
+                <div class="card-header">
+                  <div class="row align-items-center">
+                    <div class="col-8">
+                       <h3 class="mb-0">{{#eq article.ID 0}}Fill article info{{/eq}}{{#gt article.ID 0}}Edit article{{/gt}} </h3>
+                    </div>
+                    <div class="col-4 text-right">
+                      {{#gt article.ID 0}}<input id="article-id" name="ID" type="hidden" value="{{article.ID}}">{{/gt}}
+                     <input id="user-id" name="userID" type="hidden" value="{{#gt article.ID 0}}{{article.userID}}{{/gt}}{{#eq article.ID 0}}{{user.ID}}{{/eq}}">
+                      {{!-- <input type="checkbox" class="form-control-input" name="publish" id="input-publish"/> --}}
+                      {{!-- <label class="form-control-label" for="input-publish">Publish</label> --}}
+                      <button type="submit" class="btn btn-primary">Save</button>
+                       {{#gt article.ID 0}}<button id="delete" class="btn trash-article">Delete Article</button>{{/gt}}
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                    <h6 class="heading-small text-muted mb-4">article information</h6>
+                    <div class="pl-lg-4">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-title">Title</label>
+                            <input required type="text" name="name" id="input-name" class="form-control" placeholder="Title" value="{{article.name}}">
+                          </div>
+                        </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label">Profile picture</label>
+                        <input type="file" name="profile_img_url" rows="4" class="form-control" placeholder="Profile picture" value="{{article.profile_img_url}}"/>
+                      </div>
+                    </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-category">Category</label>
+                            <select name="categoryID" type="text" id="input-category" class="form-control">
+                              {{#each categories}}
+                              <option {{#eq ../article.categoryID this.ID}} selected {{/eq}} value="{{this.ID}}">{{this.name}}</option>
+                              {{/each}}
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-author">Author</label>
+                            <input type="text" name="author" id="input-author" class="form-control" placeholder="Author" value="{{article.author}}">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="my-4" />
+                    <!-- Description -->
+                    <h6 class="heading-small text-muted mb-4">Summary</h6>
+                    <div class="pl-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label">Summary</label>
+                        <textarea name="short_desc" rows="4" class="form-control" placeholder="Short summary">{{article.short_desc}}</textarea>
+                      </div>
+                    </div>
+                    <div class="pl-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label">Description</label>
+                        <textarea name="description" rows="4" class="form-control" placeholder="A few words about the article ...">{{article.description}}</textarea>
+                      </div>
+                    </div>
+                </div>
+              </form>
+
+            </div>
+            <div id="view" class="tab-pane fade {{#gt article.ID 0}}active show{{/gt}}" role="tabpanel" aria-labelledby="alerts-view-tab">
+              <div class="card-header">
+                 <div class="row align-items-center">
+                   <p>{{article.short_desc}}</p>
+                 </div>                
+              </div>
+              <div class="card-body">
+                <div class="row align-items-center">
+                  {{article.description}}
+                </div>
+              </div>
+            </div>
+          </div>
+          {{#gt article.ID 0}}
+          <ul class="nav nav-tabs-code py-3" id="alerts-tab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link" id="alerts-edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="alerts-edit" aria-selected="false">Edit</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" id="alerts-view-tab" data-toggle="tab" href="#view" role="tab" aria-controls="alerts-view" aria-selected="true">View</a>
+            </li>
+          </ul>
+          {{/gt}}
+          </div>
+        </div>
+      </div>
+        </div>

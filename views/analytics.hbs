@@ -1,0 +1,94 @@
+    <!-- Page content -->
+    <div class="container mt--12">
+      <div class="row align-items-center py-4 mt--250">
+        <div class="col-12">
+          <h1 class="font-weight-bold text-white">{{title}}</h1>
+          <!-- Search and filter -->
+          <form id="select-analytics" method="get" action="/analytics/"> 
+            <div class="row">
+                <div class="input-daterange datepicker row align-items-center col-lg-7 col-11">
+                  <div class="col">
+                      <div class="form-group">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                              </div>
+                              <input class="form-control" name="start_date" placeholder="Start date" type="text" value="{{condition.start_date}}">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col">
+                      <div class="form-group">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                              </div>
+                              <input class="form-control" name="end_date" placeholder="End date" type="text" value="{{condition.end_date}}">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="form-group col-lg-1 col-1">
+                <button type="submit" class="btn btn-primary">Filter</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row py-6 py-lg-6 pt-lg-6">
+          <div class="col-12">
+          <div class="card">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h3 class="mb-0">Page visits</h3>
+                </div>
+                <div class="col text-right">
+                  <a href="#!" class="btn btn-sm btn-primary">See all</a>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <!-- Projects table -->
+              <table id="analytics-table" class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col" class="sort" data-sort="url">Page url</th>
+                    <th scope="col" class="sort" data-sort="visits">Visits</th>
+                    <th scope="col" class="sort" data-sort="time">Time</th>
+                    <th scope="col" class="sort" data-sort="visitors">Unique users</th>
+                     <th scope="col" class="sort" data-sort="created_at">Recent visit date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each analytics}}
+                  <tr data-index="{{this.page_id}}">
+                    <th scope="row">
+                     {{this.url}}
+                    </th>
+                    <td>
+                      {{this.visits}}
+                    </td>
+                    <td>
+                      {{this.time}}
+                    </td>
+                    <td>
+                      {{this.visitors}}
+                    </td>
+                    <td>
+                      {{this.created_at}}
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          </div>
+        {{#each analytics}}
+
+        {{/each}}
+      </div>
+    </div>
+
+        

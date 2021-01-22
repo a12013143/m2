@@ -1,0 +1,198 @@
+
+    <!-- Page content -->
+    <div class="container mt--6">
+      <div class="row align-items-center py-4 mt--250">
+        <div class="col-lg-6 col-5">
+            <h1 class="font-weight-bold text-white">{{title}}</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-3 col-4 order-xl-2">
+          <div class="card card-profile">
+            <img src="{{user.profile_img_url}}" alt="Image placeholder" class="card-img-top">
+   
+            <div class="card-body pt-0">
+              <div class="text-center">
+                <h5 class="h3">
+                  {{user.name}}
+                </h5>
+                <p class="h5 font-weight-300">
+                  <i class="ni location_pin mr-2"></i>{{user.phone}}
+                </p>
+                <p data-userid = "{{user.owner_id}}" class="h5 mt-4">
+                  <i class="ni business_briefcase-24 mr-2"></i>{{user.email}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-9 order-xl-1">
+          <div class="card shadow-none mt-0">
+          <div class="tab-content">
+            <div id="edit" class="tab-pane tab-example-result fade {{#if edit_param}}active show{{/if}}" role="tabpanel" aria-labelledby="alerts-edit-tab">
+
+               <!-- Alerts -->
+              <div class="alert alert-success m-4 d-none" role="alert">
+              This is a success alert—check it out!
+              </div>
+              <form id="{{#if user.id }}edit{{else}}add{{/if}}-user-form" role="form" method="{{#if user.id }}put{{else}}post{{/if}}" action="/users/{{#if user.id }}{{user.id}}{{/if}}">
+                <div class="card-header">
+                  <div class="row align-items-center">
+                    <div class="col-8">
+                       <h3 class="mb-0">{{#if user.id}} Edit profile{{else}} Fill profile info {{/if}}</h3>
+                    </div>
+                    <div class="col-4 text-right">
+                      {{#if user.name}}<input id="user-id" name="id" type="hidden" value="{{user.id}}">{{/if}}
+                      <input type="checkbox" class="form-control-input" name="publish" id="input-publish"/>
+                      <label class="form-control-label" for="input-publish">Publish</label>
+                      <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                    <h6 class="heading-small text-muted mb-4">User information</h6>
+                    <div class="pl-lg-4">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">Name</label>
+                            <input type="text" name="name" id="input-name" class="form-control" placeholder="Name" value="{{user.name}}">
+                          </div>
+                        </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label">Profile picture</label>
+                        <input type="file" name="profile_img_url" rows="4" class="form-control" placeholder="Profile picture" value="{{user.profile_img_url}}"/>
+                      </div>
+                    </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-category">Role</label>
+                            <select name="category" type="text" name="category" id="input-category" class="form-control">
+                              <option value="1">General</option>
+                              <option selected value="2">Admin</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="my-4" />
+                    <!-- Description -->
+                       <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-email">Email</label>
+                            <input type="email" name="email" id="input-email" class="form-control" placeholder="Email" value="{{user.email}}">
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-email">Phone</label>
+                            <input type="text" name="phone" id="input-phone" class="form-control" placeholder="Phone" value="{{user.phone}}">
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-address">Address</label>
+                            <textarea type="text" name="address" id="input-address" class="form-control" placeholder="Adress" value="{{user.address}}"></textarea>
+                          </div>
+                        </div>
+                </div>
+              </form>
+
+            </div>
+            <div id="adoption-requests" class="tab-pane fade {{#if show_adoptions_param}}active show{{/if}}" role="tabpanel" aria-labelledby="alerts-adoption-requests-tab">
+              <div class="card-header">
+                   <h3 class="mb-0">Adoption requests</h3>            
+              </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                    <div class="alert alert-success m-4 d-none" role="alert">
+                              This is a success alert—check it out!
+                     </div>
+                    <table class="table align-items-center table-flush">
+                      <thead class="thead-light">
+                        <tr>
+                          <th scope="col" >Pet</th>
+                          <th scope="col" class="sort" data-sort="status">Status</th>
+                          <th scope="col" class="sort" data-sort="user">User</th>
+                          <th scope="col" class="sort" data-sort="message">Message</th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody class="list">
+                        {{#each user.adoptions}}
+                        <tr id="{{this.ID}}" data-adoption_id="{{this.ID}}">
+                          <th scope="row">
+                            <div class="media align-items-center">
+                              <a href="#" class="avatar rounded-circle mr-3">
+                                <img alt="Image placeholder" src="{{this.pet_profile_img_url}}">
+                              </a>
+                              <div class="media-body">
+                                <span class="name mb-0 text-sm">{{this.petName}}</span>
+                              </div>
+                            </div>
+                          </th>
+                          <td>
+                            <span class="badge badge-dot mr-4">
+                              {{#eq this.status "Initiated"}}<i class="bg-info"></i>{{/eq}}
+                              {{#eq this.status "In progress"}}<i class="bg-warning"></i>{{/eq}}
+                              {{#eq this.status "Approved"}}<i class="bg-success"></i>{{/eq}}
+                              {{#eq this.status "Declined"}}<i class="bg-danger"></i>{{/eq}}
+                              <span class="status">{{this.status}}</span>
+                            </span>
+                          </td>
+                          <td>
+                            <div class="avatar-group">
+                              <a href="/profile/{{this.userID}}" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="{{this.name}}">
+                                <img alt="Image placeholder" src="{{this.profile_img_url}}">
+                              </a>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <p>{{this.description}}</p>
+                            </div>
+                          </td>
+                          <td class="text-right">
+                            <div class="dropdown">
+                              <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <form id="update-adoption" method="put" action="/adoptions/{{this.ID}}"> 
+                                    <input type="hidden" readonly class="form-control" name="ID" value="{{this.ID}}">
+                                    <div class="form-group p-3 m-0">
+                                    <select class="form-control" name="status">
+                                      <option value = "Initiated">Initiated</option>
+                                      <option value = "In progress">In progress</option>
+                                      <option value = "Approved">Approve</option>
+                                      <option value = "Declined">Decline</option>
+                                    </select>     
+                                    </div>                           
+                                  <button type="submit" class="dropdown-item" href="#">Update status</button>
+                                  {{!-- <a type="submit" id="approve-adoption-status" data-status="Declined" class="dropdown-item" href="#">Decline</a> --}}
+                                </form>
+                                <a class="dropdown-item" href="mailto:{{this.email}}">Contact by email</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <ul class="nav nav-tabs-code py-3" id="alerts-tab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link" id="alerts-edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="alerts-edit" aria-selected="false">Edit</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" id="alerts-adoption-requests-tab" data-toggle="tab" href="#adoption-requests" role="tab" aria-controls="alerts-adoption-requests" aria-selected="true">Adoption Requests</a>
+            </li>
+          </ul>
+          </div>
+        </div>
+      </div>
+        </div>

@@ -1,0 +1,39 @@
+.text-transform-none{
+  text-transform: none;
+}
+
+/* Nav */
+.dropdown-menu-xl {
+  min-width: 260px!important;
+}
+
+/* Tables  override CSS*/
+div .card .table td, .card .table th {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+/* Header  cards*/
+
+.mt--10percent{
+  margin-top:-20%!important;
+}
+.mt--250{
+  margin-top:-220px!important;
+}
+
+/* Cards  */
+.card-img-250{
+  height:250px;
+  overflow: hidden;  
+  background-size: cover;
+}
+
+.card-img-250 img{
+  min-height: 100%;
+  height:auto;
+  min-width: 100%;
+  max-width: 100%;
+  width: auto;
+}
+
