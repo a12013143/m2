@@ -5,17 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var connection = require('./config/connection');
-var sqlitebasics = require('./config/sqlitebasics')
-var pet = require('./models/pet')
-var article = require('./models/article')
 var petsRouter = require('./routes/pets');
 var articlesRouter = require('./routes/articles');
 var adoptionsRouter = require('./routes/adoptions');
 var analyticsRouter = require('./routes/analytics');
 var favouritesRouter = require('./routes/favourites');
 var usersRouter = require('./routes/users');
-
 
 var app = express();
 

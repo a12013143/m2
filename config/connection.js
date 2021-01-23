@@ -84,14 +84,6 @@ db.run(sql_create7, err => {
   console.log("Adoption table: check.");
 });
 
-
-/*db.run(sql_create8, err => {
-  if (err) {
-    return console.error(err.message);
-  }
-  console.log("Pet_galery table: check.");
-});*/
-
 db.run(sql_create9, err => {
   if (err) {
     return console.error(err.message);
@@ -211,6 +203,21 @@ const connection = {
         });
   }
 }
+
+
+
+// G -- Test  mongo ------------------
+// var mongo = require('mongodb');
+var MongoClient = require('mongodb').MongoClient
+var url = "mongodb://localhost:27017/mydb";
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  console.log("Database created!");
+  db.close();
+});
+
+// G--------------------
+
 
 module.exports = connection;
 
