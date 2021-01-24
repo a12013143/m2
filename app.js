@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var connection = require('./confignosql/connection');
 var indexRouter = require('./routes/index');
 var petsRouter = require('./routes/pets');
 var articlesRouter = require('./routes/articles');

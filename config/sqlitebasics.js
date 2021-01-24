@@ -1,7 +1,6 @@
 // This should be changed and adapted with database implementation (or removed)
 // HERE ARE THE BASIC CRUD OPERATIONS QUERIES THAT ARE SAME FOR ALL TABLES
 var connection = require('./connection.js');
-var migration = require('./migration.js');
 
 const db = connection.db;
 
