@@ -1,6 +1,6 @@
 var express = require('express');
-const connection = require('../config/connection');
-const sqlitebasics = require('../config/sqlitebasics');
+const connection = require('../confignosql/connection');
+const mongobasics = require('../confignosql/mongobasics');
 var router = express.Router();
 var _article = require('../models/article.js');
 
@@ -12,59 +12,90 @@ router.get('/', function(req, res) {
   console.log('req.query pets get');
   console.log(req.query);
 
-  var categories = [];
-  
-  var userID = req.query.userId;
-  if(!userID){
-    userID=1;
-  }
-  var user = {ID:userID}
-  sqlitebasics.selectone("user",userID, function(data) {
-    user = data[0];
-    console.log('user');
-    console.log(user);
-    condition={userID};    
-    _adoption.selectall("adoption",condition, function(data) {
-      if(user && data){
-        user.adoptions = data;
-        user.show_adoptions = user.adoptions.slice(0,3);
-        console.log('show_adoptions');
-        console.log(user.show_adoptions);
-      }          
-       sqlitebasics.selectall("article_cat" , function(data) {
-         categories = data;
-         console.log('Article page categories');
-         console.log(data);
-         renderHtmlAfterCategoriesLoad();
-       }, {});
-          
-    });
-  });
- 
-   // Get pets by query data
-   function renderHtmlAfterCategoriesLoad(){
-     console.log('renderHtmlAfterCategoriesLoad');
-     var condition = {};
-     if(req.query.category){
-       condition.category = req.query.category;
-     }
-     if(req.query.keyword){
-       condition.keyword = req.query.keyword;
-     }
-     _article.selectall("article" , function(data) {
-       articles = data;
-       console.log('Article page articles');
-       console.log(data);
-       var header_image = "/images/repo/ronald.jpg";
-       res.render('articles', { title: 'Articles' ,articles,categories,condition,header_image,user});
-     }, condition);
+  var categories = [];  
+
+  // HEADER USER
+ var userID = req.query.userId;
+ if(!userID){
+   userID=1;
+ }
+ var user = {ID:userID}
+ mongobasics.selectone("user",userID, function(data) {
+   user = data[0];
+   if(!user){
+     console.log("\nres.redirect('/register')\n");
+     res.redirect('/register');
+     return;
    }
+
+   // HEADER peT ADOPTION REQUESTS
+
+   let condition={ownerID: userID};
+
+   mongobasics.selectall("pet",null,condition, function(data){
+     user.adoptions = [];
+
+     //Get pets to get adoptions
+     pets = data;
+     //Save pet adoptions to user.adoptions
+     if(data){
+       data.forEach(dataItem => {
+         if(dataItem.adoptions.length>0){ 
+           //set adoptions petname
+            let i = 0;
+             dataItem.adoptions.forEach(adoption => {
+             dataItem.adoptions[i].petName = dataItem.name;              
+             dataItem.adoptions[i].profile_img_url = dataItem.profile_img_url;
+             i++;
+           });
+           user.adoptions=user.adoptions.concat(dataItem.adoptions);
+         }
+       });
+     }
+
+     //user adoptions
+     user.show_adoptions= user.adoptions.slice(0,3);
+     console.log('user.show_adoptions');
+     console.log(user.show_adoptions);    
+
+     // Get categories
+     var condition = {};
+     mongobasics.selectall("article_cat" , null ,condition,function(data) {
+       categories = data;
+       console.log('Article page categories');
+       console.log(data);
+       renderHtmlAfterCategoriesLoad();
+     }, {}); 
+
+   });
  });
+ 
+  // Get pets by query data (filter)
+  function renderHtmlAfterCategoriesLoad(){
+    let condition = {};
+    if(req.query.category){
+      condition.category = req.query.category;
+    }
+    if(req.query.keyword){
+      condition.keyword = req.query.keyword;
+    }
+
+    // CHANGE THIS TO RETURN PETS FILTERED
+    mongobasics.selectall("article" , null ,condition,function(data) {
+      articles = data;
+      console.log('Article page articles');
+      console.log(data);
+      var header_image = "/images/repo/ronald.jpg";
+      res.render('articles', { title: 'Articles' ,articles,categories,condition,header_image,user});
+    });
+  }
+});
 
  /** GET by articleId*/
 router.get('/:articleId', function(req, res) {
 
-  console.log('req.session articles get by articleid');
+  var articleId = req.params.articleId;
+  console.log('Get articles get by articleId');
   console.log(req.session);
   var categories = [];
   var userID = req.query.userId;
@@ -72,43 +103,66 @@ router.get('/:articleId', function(req, res) {
     userID=1;
   }
   var user = {ID:userID}
-  sqlitebasics.selectone("user",userID, function(data) {
+  mongobasics.selectone("user",userID, function(data) {
     user = data[0];
-    console.log('user');
-    console.log(user);
-    condition={userID};    
-    _adoption.selectall("adoption",condition, function(data) {
-      if(user && data){
-        user.adoptions = data;
-        user.show_adoptions = user.adoptions.slice(0,3);
-        console.log('show_adoptions');
-        console.log(user.show_adoptions);
-      }     
-      
-      // Get categories;
-      sqlitebasics.selectall("article_cat" , function(data) {
+    if(!user){
+      console.log("\nres.redirect('/register')\n");
+      res.redirect('/register');
+      return;
+    }
+    
+    let condition={ownerID: userID};
+    mongobasics.selectall("pet",null,condition, function(data){
+      user.adoptions = [];
+
+      //Get pets to get adoptions
+      pets = data;
+      //Save pet adoptions to user.adoptions
+      if(data){
+        data.forEach(dataItem => {
+          if(dataItem.adoptions.length>0){ 
+            //set adoptions petname
+             let i = 0;
+              dataItem.adoptions.forEach(adoption => {
+              dataItem.adoptions[i].petName = dataItem.name;              
+              dataItem.adoptions[i].profile_img_url = dataItem.profile_img_url;
+              i++;
+            });
+            user.adoptions=user.adoptions.concat(dataItem.adoptions);
+          }
+        });
+      }
+
+      //user adoptions
+      user.show_adoptions= user.adoptions.slice(0,3);
+      console.log('user.show_adoptions');
+      console.log(user.show_adoptions);    
+
+      // Get categories
+      var condition = {};
+      mongobasics.selectall("article_cat" , null ,condition,function(data) {
         categories = data;
         console.log('Articles page categories');
         console.log(data);
         renderHtmlAfterCategoriesLoad();
-      }, {});
-          
+      }, {}); 
+
     });
   });
   
+
   function renderHtmlAfterCategoriesLoad(){
-    var articleId = req.params.articleId;
-    let temp = articleId;
+   
     if(articleId == "new"){
-      article = {ID:0, profile_img_url:"/images/pawprint-blue.png"};
-      var header_image = article.profile_img_url;
-      res.render('article', { title: 'Articles - New' ,categories, article, header_image,user});
+      article = {ID : 0, profile_img_url:"/images/pawprint-blue.png"};
+      var header_image = pet.profile_img_url;
+      res.render('article', { title: 'Articles - New',categories,article,header_image,user});
     }else{
-      _article.selectone(temp, function(data) {
+      //pet = pets[petId-1];
+        mongobasics.selectone('article',articleId, function(data) {
         article = data[0];
         console.log('article---');
         console.log(article);
-
         if (data.err){
           res.status(500).json({
             'message': 'Internal Error.'
@@ -120,9 +174,9 @@ router.get('/:articleId', function(req, res) {
             header_image = article.profile_img_url;
             title = article.name;
           }
-          res.render('article', { title: title, categories, article,header_image,user});
-        
+          res.render('article', { title: title,article,categories,header_image,user});
         }
+        
       });
     }
   }
@@ -154,9 +208,9 @@ router.post('/', function(req, res) {
     let querytemp = '(' + maxrowID + ', "' + vals.name +'", "' + vals.author + '", "' + vals.description + '", "' + vals.short_desc + '", ' + vals.userID + ', "' + vals.created_at + '", "' + vals.updated_at+ '", '  + vals.categoryID + ', ' + /*req.body.profile_img_url + '"'*/ '"/images/repo/petcare-large.jpg"';
     console.log('querytemp')
     console.log(querytemp)
-    sqlitebasics.insertone("article" , querytemp, function(data) {
+    mongobasics.insertone("article" , querytemp, function(data) {
       categories = data;
-      console.log('sqlitebasics.insertone');
+      console.log('mongobasics.insertone');
       console.log(data);
   
       if (data){
@@ -183,9 +237,9 @@ router.put('/:ID', function(req, res) {
   var columns = Object.keys(req.body);
   var values = Object.values(req.body);
 
-  sqlitebasics.updateone("article" , columns, values, condition, function(data) {
+  mongobasics.updateone("article" , columns, values, condition, function(data) {
     categories = data;
-    console.log('sqlitebasics.updateone');
+    console.log('mongobasics.updateone');
     console.log(data);
 
     if (data){
@@ -205,8 +259,8 @@ router.delete('/:id', function(req, res) {
   let condition = 'ID = ' + articleId;
 
   console.log('Delete article');
-  sqlitebasics.delete("article", condition, function(data){  
-    console.log('sqlitebasics.delete');  
+  mongobasics.delete("article", condition, function(data){  
+    console.log('mongobasics.delete');  
     console.log(data);
 
     if (data){

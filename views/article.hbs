@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="row">
-        {{#gt article.ID 0}}
+        {{#gt article._id 0}}
         <div class="col-xl-12 order-xl-1">
           <div class="card card-profile shadow-none mb- d-block text-center pt-4">
             <img src="{{article.profile_img_url}}" alt="Image placeholder" class="card-img-top" style="max-width:100%; width:auto; max-height:550px;" >
@@ -33,25 +33,25 @@
         <div class="col-xl-12 order-xl-1">
           <div class="card shadow-none mt-0">
           <div class="tab-content">
-            <div id="edit" class="tab-pane tab-example-result fade {{#eq article.ID 0}}active show{{/eq}}" role="tabpanel" aria-labelledby="alerts-edit-tab">
+            <div id="edit" class="tab-pane tab-example-result fade {{#eq article._id 0}}active show{{/eq}}" role="tabpanel" aria-labelledby="alerts-edit-tab">
 
                <!-- Alerts -->
               <div class="alert alert-success m-4 d-none" role="alert">
               This is a success alert—check it out!
               </div>
-              <form id="{{#if article.name }}edit{{else}}add{{/if}}-article-form" role="form" method="{{#if article.name }}put{{else}}post{{/if}}" action="/articles/{{#if article.name }}{{article.ID}}{{/if}}" enctype="multipart/form-data">
+              <form id="{{#if article.name }}edit{{else}}add{{/if}}-article-form" role="form" method="{{#if article.name }}put{{else}}post{{/if}}" action="/articles/{{#if article.name }}{{article._id}}{{/if}}" enctype="multipart/form-data">
                 <div class="card-header">
                   <div class="row align-items-center">
                     <div class="col-8">
-                       <h3 class="mb-0">{{#eq article.ID 0}}Fill article info{{/eq}}{{#gt article.ID 0}}Edit article{{/gt}} </h3>
+                       <h3 class="mb-0">{{#eq article._id 0}}Fill article info{{/eq}}{{#gt article._id 0}}Edit article{{/gt}} </h3>
                     </div>
                     <div class="col-4 text-right">
-                      {{#gt article.ID 0}}<input id="article-id" name="ID" type="hidden" value="{{article.ID}}">{{/gt}}
-                     <input id="user-id" name="userID" type="hidden" value="{{#gt article.ID 0}}{{article.userID}}{{/gt}}{{#eq article.ID 0}}{{user.ID}}{{/eq}}">
+                      {{#gt article._id 0}}<input id="article-id" name="_id" type="hidden" value="{{article._id}}">{{/gt}}
+                     <input id="user-id" name="userID" type="hidden" value="{{#gt article._id 0}}{{article.userID}}{{/gt}}{{#eq article._id 0}}{{user._id}}{{/eq}}">
                       {{!-- <input type="checkbox" class="form-control-input" name="publish" id="input-publish"/> --}}
                       {{!-- <label class="form-control-label" for="input-publish">Publish</label> --}}
                       <button type="submit" class="btn btn-primary">Save</button>
-                       {{#gt article.ID 0}}<button id="delete" class="btn trash-article">Delete Article</button>{{/gt}}
+                       {{#gt article._id 0}}<button id="delete" class="btn trash-article">Delete Article</button>{{/gt}}
                     </div>
                   </div>
                 </div>
@@ -76,7 +76,7 @@
                             <label class="form-control-label" for="input-category">Category</label>
                             <select name="categoryID" type="text" id="input-category" class="form-control">
                               {{#each categories}}
-                              <option {{#eq ../article.categoryID this.ID}} selected {{/eq}} value="{{this.ID}}">{{this.name}}</option>
+                              <option {{#eq ../article.categoryID this._id}} selected {{/eq}} value="{{this._id}}">{{this.name}}</option>
                               {{/each}}
                             </select>
                           </div>
@@ -108,7 +108,7 @@
               </form>
 
             </div>
-            <div id="view" class="tab-pane fade {{#gt article.ID 0}}active show{{/gt}}" role="tabpanel" aria-labelledby="alerts-view-tab">
+            <div id="view" class="tab-pane fade {{#gt article._id 0}}active show{{/gt}}" role="tabpanel" aria-labelledby="alerts-view-tab">
               <div class="card-header">
                  <div class="row align-items-center">
                    <p>{{article.short_desc}}</p>
@@ -121,7 +121,7 @@
               </div>
             </div>
           </div>
-          {{#gt article.ID 0}}
+          {{#gt article._id 0}}
           <ul class="nav nav-tabs-code py-3" id="alerts-tab" role="tablist">
             <li class="nav-item">
               <a class="nav-link" id="alerts-edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="alerts-edit" aria-selected="false">Edit</a>
