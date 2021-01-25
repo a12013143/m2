@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Article = require("../modelsnosql/article");
 const Schema = mongoose.Schema;
 
 /**
@@ -9,8 +8,7 @@ const Schema = mongoose.Schema;
 const ArticleCategorySchema = new Schema({
     _id:Number,
     name:{ type: String, default: '' },
-    description: { type: String, default: 3 },
-    articles: [{type: Number, ref: Article}]
+    description: { type: String, default: 3 }
 },{ collection: 'article_cat' });
 
 const ArticleCategory = mongoose.model('article_cat', ArticleCategorySchema);

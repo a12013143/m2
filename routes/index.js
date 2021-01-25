@@ -161,14 +161,21 @@ router.get('/profile/:userId?', function(req, res, next) {
 router.post('/initialInsert', function(req, res, next) {
 
   console.log('Insert initial data');
-  connection.migrateFromSqlite( function() {
-    //res.status(200).json(data);
-    console.log("\nres.redirect("/");\n");
-    res.redirect("/");
+  connection.migrateFromSqlite( function(data) {
+    res.status(200).json(data);
   });
   // mongobasics.initialInsert("", function(data) {
   //   res.status(200).json(data);
   // });
+}); 
+
+
+/* Insert initial data*/
+router.delete('/dropCollections', function(req, res, next) {
+  console.log('Drop collections');
+  connection.dropCollections( function() {
+    res.status(200).json(data);
+  });
 
 }); 
 

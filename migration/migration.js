@@ -30,16 +30,16 @@ const migration = {
                 ]
             },
             {
-                mainTableName:"pet_category",
-                nested:[
-                    {nestedTableName:"pet", foreignId:"categoryID", newFieldName:"pets"},
-                ]
+                mainTableName:"pet_category"
+                // ,nested:[
+                //     {nestedTableName:"pet", foreignId:"categoryID", newFieldName:"pets"},
+                // ]
             },
             {
-                mainTableName:"article_cat",
-                nested:[                    
-                    {nestedTableName:"article", foreignId:"categoryID", newFieldName:"articles"},
-                ]
+                mainTableName:"article_cat"
+                // ,nested:[                    
+                //     {nestedTableName:"article", foreignId:"categoryID", newFieldName:"articles"},
+                // ]
             }                  
         ];
 

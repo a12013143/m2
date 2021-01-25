@@ -218,14 +218,17 @@
             &copy; 2021 <a href="#" class="font-weight-bold ml-1" target="_blank">FosterPet</a>
           </div>
         </div>
-        {{#eq user.adoptions undefined}}
+        
         <div class="col-lg-6">
-          <div id="insert-initial-data" class="text-center  text-lg-right  text-muted">
+          <div class="text-center  text-lg-right  text-muted">
               <!-- Post new pet button -->
-              <button id="insert-initial-data" class="btn btn-sm btn-neutral">Insert Dummy Data</button>
+              {{#if user.adoptions}}
+              <button id="drop-collections" class="btn btn-sm btn-neutral">Drop Dummy Data</button>
+              {{else}}
+              <button id="insert-initial-data" class="btn btn-sm btn-neutral">Insert Dummy Data</button>   
+               {{/if}}
           </div>
-        </div>
-        {{/eq}}
+        </div>      
       </div>
       </div>
     </footer>

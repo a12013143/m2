@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 var User = require('../modelsnosql/user.js');
+var PetCategory = require('../modelsnosql/pet_category.js');
 const Schema = mongoose.Schema;
 
 /**
@@ -18,6 +19,7 @@ const PetSchema = new Schema({
     created_at:  { type: String, default: Date.now },
     updated_at:  { type: String, default: Date.now },
     profile_img_url:  { type: String, default: 3 },
+    categoryID :{type: Number, ref: PetCategory},
     ownerID :{type: Number, ref: User},
     favourited_by: [{type: Number, ref: User}],   
     adoptions: [new mongoose.Schema(

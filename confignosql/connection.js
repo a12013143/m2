@@ -25,18 +25,12 @@ mongoose.connect(url, function(err, db) {
 
 const connection = {
   db:  mongoose.connection,
-  initialInsert: function(){  
+  initialInsert: function(){ // Currently not used 
     console.log("MongoDB initial insertion.");
-
     var objs = [
-      {
-        _id:1,
-        name:"Grese Hyseni",email:"hysenigresa@gmail.com",phone:"067239232",address:"Spengergasse",role:"Admin",profile_img_url:"/images/repo/user.png",
-      },
-      {
-        _id:2,
-        name:"Hannah Poor",email:"hannahpoor@gmail.com",phone:"067239232",address:"Maria Hilf.",role:"Admin",profile_img_url:"/images/repo/user.png",
-      }
+      {_id:1,
+        name:"Grese Hyseni",email:"hysenigresa@gmail.com",phone:"067239232",address:"Spengergasse",role:"Admin",profile_img_url:"/images/repo/user.png",},
+      { _id:2,name:"Hannah Poor",email:"hannahpoor@gmail.com",phone:"067239232",address:"Maria Hilf.",role:"Admin",profile_img_url:"/images/repo/user.png", }
     ];
     mongoose.model('user').insertMany(objs,{ forceServerObjectId: false }).then(function(){ 
       console.log("Data inserted")  // Success 
@@ -44,43 +38,27 @@ const connection = {
       console.log(error)      // Failure 
     });
 
-    
-    // Article Categories
-    //ID INT UNIQUE PRIMARY KEY, name TEXT, description TEXT 
- 
-
-    
-
-    //Articles
-    //ID,name TEXT, author TEXT, short_desc TEXT, description TEXT, userID INT, created_at TEXT, updated_at TEXT, article_catID INT
-
-    
-
-    // Pet Categories
-    //ID INT UNIQUE PRIMARY KEY, name TEXT, description TEXT 
-
-    
-    
-    // Pets
-    //ID , ownerID INT, name TEXT, address TEXT, categoryID INT, neutered INT, age_year INT, age_month INT, short_desc TEXT, description TEXT, profile_img_url 
-    // Adoption
-    // ID, userID INT, petID INT, description TEXT, status 
-
-
-
-    // Favourite
-    //ID,userID INT, petID INT,
-
-    
-
   },
   migrateFromSqlite: async function(callback) {
       // let url = "mongodb://localhost:27017/mydb"
       let sqlitePath = "./data/db.db";
       await migration.migrate(sqlitePath, url);
-      console.log('OVER');
+      console.log('MIGRATION OVER');
       callback();    
-  }
+  },
+  dropCollections: async function(callback) {
+    // let url = "mongodb://localhost:27017/mydb"
+    let collections = ["user","article","analytics","pet","pet_category","article_cat"];
+
+    collections.forEach(element => {
+      mongoose.model(element).remove({}, function(err) { 
+        console.log(element+' collection removed') 
+      });
+    });
+    
+    console.log('DROP OVER');
+    callback();    
+}
 }
 
 

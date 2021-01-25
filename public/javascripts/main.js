@@ -360,6 +360,9 @@
         $('#insert-initial-data').on('click',function(){
             insertInitialData();
         });
+        $('#drop-collections').on('click',function(){
+            dropCollections();
+        });
 
         function insertInitialData(){
             $.ajax({
@@ -369,6 +372,27 @@
                 contentType: "application/json",
                 success: function(data, status) {
                     console.log('Inital data inserted!');
+                    console.log(data);
+                    windows.location.reload();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+
+            window.setTimeout(function(){
+                // window.location.reload();
+            },2000);
+        }
+
+        function dropCollections(){
+            $.ajax({
+                url: "/dropCollections",
+                type: "DELETE",
+                data: JSON.stringify({}),
+                contentType: "application/json",
+                success: function(data, status) {
+                    console.log('Collections dropped!');
                     console.log(data);
                     // windows.location.reload();
                 },

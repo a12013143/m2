@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const User = require("../modelsnosql/user");
+var ArticleCategory = require('../modelsnosql/article_cat.js');
 
 /**
  * Article Schema
@@ -10,7 +11,7 @@ const ArticleSchema = new Schema({
     _id:Number,
     name:{ type: String, default: '' },
     userID: {type: Number, ref: User},
-    neutered: { type: Number, default: 3 },
+    categoryID :{type: Number, ref: ArticleCategory},
     age_year: { type: Number, default: null },
     age_month: { type: Number, default: null },
     short_desc: { type: String, default: 3 },
