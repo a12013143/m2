@@ -6,15 +6,16 @@ const Schema = mongoose.Schema;
  */
 
 const UserSchema = new Schema({
+    _id:Number,
     name:{ type: String, default: '' },
     email: { type: String, default: '' },
     phone: { type: String, default: '' },
     address: { type: String, default: '' },
-    role: { type: Int16Array, default: 3 },
+    role: { type: String, default: 'General' },
     //articles: [{type: mongoose.ObjectId, ref: User}],
     profile_img_url:  { type: String, default: '/images/repo/user.png' },
-});
+}, { collection: 'user' });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('user', UserSchema);
 
 module.exports=User;
