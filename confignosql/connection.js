@@ -13,15 +13,14 @@ var url = "mongodb://localhost:27017/mydb";
 mongoose.connect(url, function(err, db) {
   if (err) throw err;
   console.log("Mongo connected!");
-  //db.close();//?
 });
 
-(async function() {
-  // let url = "mongodb://localhost:27017/mydb"
-  let sqlitePath = "./data/db.db";
-  await migration.migrate(sqlitePath, url);
-  console.log('OVER');
-})();
+// (async function() {
+//   // let url = "mongodb://localhost:27017/mydb"
+//   let sqlitePath = "./data/db.db";
+//   await migration.migrate(sqlitePath, url);
+//   console.log('OVER');
+// })();
 
 
 const connection = {
@@ -75,14 +74,12 @@ const connection = {
     
 
   },
-  migrateFromSqlite: function(){  
-    (async function() {
+  migrateFromSqlite: async function(callback) {
       // let url = "mongodb://localhost:27017/mydb"
       let sqlitePath = "./data/db.db";
-      migration.initiate(sqlitePath, url);
       await migration.migrate(sqlitePath, url);
       console.log('OVER');
-    })();
+      callback();    
   }
 }
 

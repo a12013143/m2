@@ -89,18 +89,7 @@ const mongobasics = {
       }
       callback(result);
     });
-  },
-
-  migrateFromSqlite: function(collectionName,callback) {
-    console.log('sqlitebasics.initialInsert')
-    connection.migrateFromSqlite(function(err, result) {
-      if (err) {
-        console.log(err);
-        return err;
-      }
-      callback(result);
-    });
-  },
+  }
 
 };
 

@@ -4,10 +4,10 @@
         "use strict";
 
         // Initial
-        if($('#insert-initial-data').length){
-            console.log('Insert initial data');
-            insertInitialData();
-        }
+        // if($('#insert-initial-data').length){
+        //     console.log('Insert initial data');
+        //     insertInitialData();
+        // }
 
         
 
@@ -357,9 +357,9 @@
 
         // Insert initial data if no data
 
-        // $('#insert-initial-data').on('click',function(){
-        //     insertInitialData();
-        // });
+        $('#insert-initial-data').on('click',function(){
+            insertInitialData();
+        });
 
         function insertInitialData(){
             $.ajax({
