@@ -1,67 +1,26 @@
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require("mongoose");
 
 const mongoMigrate = {
 
-    initiate: function(mongoUrl) {
-        this.mongoUrl = mongoUrl;
-        this.mongoDbName = undefined;
-        this.mongodb = undefined;
-        this.collectionName = undefined;
-    },
-    openMongoDb: function() {
+    openMongoDb: function(mongoUrl) {
         return new Promise( (resolve, reject) => {
-            MongoClient.connect(this.mongoUrl, (err, mongodb) => {
+            mongoose.connect(mongoUrl, (err, mongodb) => {
                 if(err) {
                     reject(err);
                 }
                 else {
-                    let dbName = this.getDbNameFromUrl();
-                    this.mongodb = mongodb.db(dbName);
+                    this.mongodb = mongoose.connection;
                     resolve();
                 }
             });
         });
     },
-    getDbNameFromUrl: function() {
-        let mongoUrl = this.mongoUrl;
-        let tokenArray = mongoUrl.split("/");
-        let dbName = tokenArray[tokenArray.length - 1];
-        this.mongoDbName = dbName;
-        return this.mongoDbName;
-    },
-    
-    setCollectionName: function(collectionName) {
-        this.collectionName = collectionName;
-        return this;
-    },
-
-    resetCollectionName: function() {
-        this.collectionName = undefined;
-        return this;
-    },
-    createCollection: function(collectionName) {
-        return new Promise( (resolve, reject) => {
-            try {
-                this.mongodb.createCollection(collectionName, (err, res) => {
-                    if(err) {
-                        reject(err);
-                    }
-                    else {
-                        resolve(collectionName);
-                    }
-                });
-            }
-            catch(err) {
-                reject(err);
-            }
-        });
-    },
     /* Insertion */
-    insertIntoCollection: function(domArray) {
+    insertIntoCollection: function(domArray,collectionName) {
         return new Promise( async (resolve, reject) => {
             try {
-                let collectionName = this.collectionName;
-                let result = await this.mongodb.collection(collectionName).insertMany(domArray);
+                // let result = await this.mongodb.collection(collectionName).insertMany(domArray);                
+                let result = await mongoose.model(collectionName).insertMany(domArray);
                 resolve({
                     code : 200,
                     message : "success"

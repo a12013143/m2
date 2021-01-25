@@ -2,15 +2,9 @@ const sqlite3 = require("sqlite3");
 
 const sqliteMigrate = {
 
-    initiate: function(sqlitePath) {
-        this.sqlitePath = sqlitePath;
-        this.sqlitedb = undefined;
-    },
-
     /* open Sqlite db */
-    openSqliteDb: function() {
+    openSqliteDb: function(sqlitePath) {
         return new Promise( (resolve, reject) => {
-            let sqlitePath = this.sqlitePath;
             let sqlitedb = new sqlite3.Database(sqlitePath, sqlite3.OPEN_READONLY, (err) => {
                 if(err) {
                     reject(err);
@@ -57,6 +51,20 @@ const sqliteMigrate = {
         return new Promise( (resolve, reject) => {
             let sql = "SELECT * FROM " + tableName + " LIMIT ? OFFSET ?";
             let params = [limit, offset];
+            this.sqlitedb.all(sql, params, (err, rows) => {
+                if(err) {
+                    reject(err);
+                }
+                else {
+                    resolve(rows);
+                }
+            });
+        }); 
+    },
+    getSqliteTableDataByForeignId: function (tableName,fieldname,value) {
+        return new Promise( (resolve, reject) => {
+            let sql = "SELECT * FROM " + tableName + " where "+fieldname+" ="+value;
+            let params = [];
             this.sqlitedb.all(sql, params, (err, rows) => {
                 if(err) {
                     reject(err);
