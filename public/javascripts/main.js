@@ -9,6 +9,7 @@
             insertInitialData();
         }
 
+        
 
         //------------General functions------//
         //serialize data function
@@ -369,7 +370,7 @@
                 success: function(data, status) {
                     console.log('Inital data inserted!');
                     console.log(data);
-                    windows.location.reload();
+                    // windows.location.reload();
                 },
                 error: function(error) {
                     console.log(error);
@@ -377,7 +378,7 @@
             });
 
             window.setTimeout(function(){
-                window.location.reload();
+                // window.location.reload();
             },2000);
         }
 
