@@ -15,9 +15,9 @@
               {{#if categories}}
               <div class="form-group col-lg-5 col-11">
                 <select class="form-control" id="input-category" name="category">
-                  <option id="0">{{this.ID}}</option>
+                  <option id="0">{{this._id}}</option>
                   {{#each categories}}                     
-                     <option  {{#eq this.ID ../condition.category}} selected {{/eq}}  value="{{this.ID}}">{{this.name}}</option>
+                     <option  {{#eq this._id ../condition.category}} selected {{/eq}}  value="{{this._id}}">{{this.name}}</option>
                   {{/each}}
                 </select>
               </div>
@@ -42,7 +42,7 @@
                 <div class="card-body">
                   <h5 class="card-title">{{this.name}}</h5>
                   <p class="card-text">{{this.short_desc}}</p>
-                  <a href="/pets/{{this.ID}}" class="btn btn-primary">Read more</a>
+                  <a href="/pets/{{this._id}}" class="btn btn-primary">Read more</a>
                 </div>
               </div>
             </div>

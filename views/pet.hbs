@@ -1,5 +1,5 @@
     <!-- Modal Adoption -->
-    {{#gt pet.ID 0 }}
+    {{#gt pet._id 0 }}
     <div class="modal fade" id="adoptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -15,8 +15,8 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <input type="hidden" name="userID" id="input-user_id" class="form-control" value="{{user.ID}}">
-                    <input type="hidden" name="petID" id="input-pet_id" class="form-control" value="{{pet.ID}}">
+                    <input type="hidden" name="userID" id="input-user_id" class="form-control" value="{{user._id}}">
+                    <input type="hidden" name="petID" id="input-pet_id" class="form-control" value="{{pet._id}}">
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label class="form-control-label" for="input-name">Name</label>
@@ -68,7 +68,7 @@
               <h1 class="font-weight-bold text-white">{{title}}</h1>         
             </div>
             </div>
-            {{#gt pet.ID 0}}
+            {{#gt pet._id 0}}
              <div class="col">
             <div class="py-3">
               <button id="apply-for-adoption" class="btn btn-neutral" data-toggle="modal" data-target="#adoptionModal">Apply for adoption</button>          
@@ -77,7 +77,7 @@
           {{/gt}}
       </div>
       <div class="row">
-        {{#gt pet.ID 0}}
+        {{#gt pet._id 0}}
         <div class="col-xl-4 order-xl-2">
           <div class="card card-profile">
             <img src="{{pet.profile_img_url}}" alt="Image placeholder" class="card-img-top">
@@ -95,7 +95,7 @@
                       <p class="description">Current applications</p>
                     </div>
                     <div class="p-0 m-0">
-                      <button type="button" class="btn-icon-clipboard btn-like" data-petID="{{pet.ID}}" data-userID="{{user.ID}}"  title="">
+                      <button type="button" class="btn-icon-clipboard btn-like" data-petID="{{pet._id}}" data-userID="{{user._id}}"  title="">
                           <i class="ni ni-favourite-28"></i>
                       </button>
                     </div>
@@ -124,24 +124,24 @@
         <div class="col-xl-8 order-xl-1">
           <div class="card">
           <div class="tab-content">
-            <div id="edit" class="tab-pane tab-example-result fade {{#eq pet.ID 0}}active show{{/eq}}" role="tabpanel" aria-labelledby="alerts-edit-tab">
+            <div id="edit" class="tab-pane tab-example-result fade {{#eq pet._id 0}}active show{{/eq}}" role="tabpanel" aria-labelledby="alerts-edit-tab">
               <!-- Alerts -->
               <div class="alert alert-success m-4 d-none" role="alert">
               This is a success alert—check it out!
               </div>
-              <form id="{{#if pet.name }}edit{{else}}add{{/if}}-pet-form" role="form" method="{{#if pet.name }}put{{else}}post{{/if}}" action="/pets/{{#if pet.name }}{{pet.ID}}{{/if}}" enctype="multipart/form-data">
+              <form id="{{#if pet.name }}edit{{else}}add{{/if}}-pet-form" role="form" method="{{#if pet.name }}put{{else}}post{{/if}}" action="/pets/{{#if pet.name }}{{pet._id}}{{/if}}" enctype="multipart/form-data">
                 <div class="card-header">
                   <div class="row align-items-center">
                     <div class="col-8">
-                      <h3 class="mb-0">{{#eq pet.ID 0}}Fill profile info{{/eq}}{{#gt pet.ID 0}}Edit profile{{/gt}} </h3>
+                      <h3 class="mb-0">{{#eq pet._id 0}}Fill profile info{{/eq}}{{#gt pet._id 0}}Edit profile{{/gt}} </h3>
                     </div>
                     <div class="col-4 text-right">
-                       {{#gt pet.ID 0}}<input id="pet-id" name="ID" type="hidden" value="{{pet.ID}}">{{/gt}}
-                        <input id="user-id" name="ownerID" type="hidden" value="{{#gt pet.ID 0}}{{pet.ownerID}}{{/gt}}{{#eq pet.ID 0}}{{user.ID}}{{/eq}}">
+                       {{#gt pet._id 0}}<input id="pet-id" name="_id" type="hidden" value="{{pet._id}}">{{/gt}}
+                        <input id="user-id" name="ownerID" type="hidden" value="{{#gt pet._id 0}}{{pet.ownerID}}{{/gt}}{{#eq pet._id 0}}{{user._id}}{{/eq}}">
                       {{!-- <input type="checkbox" class="form-control-input" id="input-publish"/> --}}
                       {{!-- <label class="form-control-label" for="input-publish">Publish</label> --}}
                       <button type="submit" class="btn btn-primary">Save</button>
-                       {{#gt pet.ID 0}}<button id="delete" class="btn trash-pet">Delete Pet</button>{{/gt}}
+                       {{#gt pet._id 0}}<button id="delete" class="btn trash-pet">Delete Pet</button>{{/gt}}
                     </div>
                   </div>
                 </div>
@@ -166,7 +166,7 @@
                             <label class="form-control-label" for="input-category">Category</label>
                             <select name="categoryID" type="text" id="input-category" class="form-control">
                               {{#each categories}}
-                              <option {{#eq ../pet.categoryID this.ID}} selected {{/eq}} value="{{this.ID}}">{{this.name}}</option>
+                              <option {{#eq ../pet.categoryID this._id}} selected {{/eq}} value="{{this._id}}">{{this.name}}</option>
                               {{/each}}
                             </select>
                           </div>
@@ -226,7 +226,7 @@
                 </div>
               </form>
             </div>
-            <div id="view" class="tab-pane fade {{#gt pet.ID 0}}active show{{/gt}}" role="tabpanel" aria-labelledby="alerts-view-tab">
+            <div id="view" class="tab-pane fade {{#gt pet._id 0}}active show{{/gt}}" role="tabpanel" aria-labelledby="alerts-view-tab">
               <div class="card-header">
                 <div class="row align-items-center">
                   {{pet.short_desc}}
@@ -239,7 +239,7 @@
               </div>
             </div>
           </div>
-          {{#gt pet.ID 0}}
+          {{#gt pet._id 0}}
           <ul class="nav nav-tabs-code py-3" id="alerts-tab" role="tablist">
             <li class="nav-item">
               <a class="nav-link" id="alerts-edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="alerts-edit" aria-selected="false">Edit</a>
