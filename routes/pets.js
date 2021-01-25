@@ -12,6 +12,8 @@ router.get('/', function(req, res) {
   console.log(req.query);
 
   var categories = [];  
+
+   // HEADER USER
   var userID = req.query.userId;
   if(!userID){
     userID=1;
@@ -25,7 +27,10 @@ router.get('/', function(req, res) {
       return;
     }
 
+    // HEADER peT ADOPTION REQUESTS
+
     let condition={ownerID: userID};
+
     mongobasics.selectall("pet",null,condition, function(data){
       user.adoptions = [];
 
@@ -64,7 +69,7 @@ router.get('/', function(req, res) {
     });
   });
 
-  // Get pets by query data
+  // Get pets by query data (filter)
   function renderHtmlAfterCategoriesLoad(){
     let condition = {};
     if(req.query.category){
@@ -73,6 +78,8 @@ router.get('/', function(req, res) {
     if(req.query.keyword){
       condition.keyword = req.query.keyword;
     }
+
+    // CHANGE THIS TO RETURN PETS FILTERED
     mongobasics.selectall("pet" , null ,condition,function(data) {
       pets = data;
       console.log('Pets page pets');
