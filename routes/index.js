@@ -45,7 +45,8 @@ router.get('/', function(req, res, next) {
             //set adoptions petname
              let i = 0;
               dataItem.adoptions.forEach(adoption => {
-              dataItem.adoptions[i].petName = dataItem.name
+              dataItem.adoptions[i].petName = dataItem.name;              
+              dataItem.adoptions[i].profile_img_url = dataItem.profile_img_url;
               i++;
             });
 
@@ -126,7 +127,9 @@ router.get('/profile/:userId?', function(req, res, next) {
             //set adoptions petname
              let i = 0;
               dataItem.adoptions.forEach(adoption => {
-              dataItem.adoptions[i].petName = dataItem.name
+              dataItem.adoptions[i].petName = dataItem.name;
+              dataItem.adoptions[i].pet_profile_img_url = dataItem.profile_img_url;
+              dataItem.adoptions[i].profile_img_url = user.profile_img_url;
               i++;
             });
 
@@ -166,7 +169,7 @@ router.post('/initialInsert', function(req, res, next) {
   // mongobasics.initialInsert("", function(data) {
   //   res.status(200).json(data);
   // });
-  
+
 }); 
 
 

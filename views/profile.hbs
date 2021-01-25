@@ -124,8 +124,9 @@
                         <tr id="{{this.ID}}" data-adoption_id="{{this.ID}}">
                           <th scope="row">
                             <div class="media align-items-center">
-                              <a href="#" class="avatar rounded-circle mr-3">
-                                <img alt="Image placeholder" src="{{this.pet_profile_img_url}}">
+                              <a href="#" class="avatar rounded-circle mr-3"
+                              style ="background: url('{{this.pet_profile_img_url}}') center; background-size:contain;">
+                                {{!-- <img alt="Image placeholder" src="{{this.pet_profile_img_url}}"> --}}
                               </a>
                               <div class="media-body">
                                 <span class="name mb-0 text-sm">{{this.petName}}</span>
@@ -143,8 +144,9 @@
                           </td>
                           <td>
                             <div class="avatar-group">
-                              <a href="/profile/{{this.userID}}" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="{{this.name}}">
-                                <img alt="Image placeholder" src="{{this.profile_img_url}}">
+                              <a href="/profile/{{this.userID}}" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="{{this.name}}"
+                              style ="background: url('{{this.profile_img_url}}') center; background-size:contain;">
+                                {{!-- <img alt="Image placeholder" src="{{this.profile_img_url}}"> --}}
                               </a>
                             </div>
                           </td>
