@@ -18,7 +18,7 @@ const PetSchema = new Schema({
     created_at:  { type: String, default: Date.now },
     updated_at:  { type: String, default: Date.now },
     profile_img_url:  { type: String, default: 3 },
-    owner_id :{type: Number, ref: User},
+    ownerID :{type: Number, ref: User},
     favourited_by: [{type: Number, ref: User}],   
     adoptions: [new mongoose.Schema(
         {

@@ -1,6 +1,7 @@
 // This should be changed and adapted with database implementation (or removed)
 // HERE ARE THE BASIC CRUD OPERATIONS QUERIES THAT ARE SAME FOR ALL TABLES
 var connection = require('./connection.js');
+var mongoose = require('mongoose');
 
 
 const db = connection.db;
@@ -10,20 +11,20 @@ const db = connection.db;
 const mongobasics = {
 
   // PUT your basic queries HERE
-  selectall: function(collectionName, callback) {
-    db.collection(collectionName).find({}).toArray(function(err, result) {
+  selectall: function(collectionName, limit ,condition={}, callback) {
+    var data= mongoose.model(collectionName).find(condition,function(err, result) {
         if (err) {
             console.log(err);
             return err;
           };
         console.log("DB select all query.");
         callback(result);
-    });
+    }).limit(limit);
     
   },
 
   selectone: function(collectionName, id, callback) {
-      db.collection(collectionName).find({_id: id }).toArray(function(err, result) {
+      mongoose.model(collectionName).find({_id: id },function(err, result) {
           if (err) {
               console.log(err);
               return err;

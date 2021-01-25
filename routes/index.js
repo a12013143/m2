@@ -20,32 +20,47 @@ router.get('/', function(req, res, next) {
     user = data[0];
     console.log('user mongo');
     console.log(user);
-    condition={userID};    
-    renderHtmlAfterUserLoad();
-    // _adoption.selectall("adoption",condition, function(data) {
-    //   if(user && data){
-    //     user.adoptions = data;
-    //     user.show_adoptions = user.adoptions.slice(0,3);
-    //     console.log('show_adoptions');
-    //     console.log(user.show_adoptions);
-    //   }
-    //   renderHtmlAfterUserLoad();
-    // });
+
+    let condition={ownerID: userID};
+    mongobasics.selectall("pet",null,condition, function(data){
+      user.show_adoptions = [];
+
+      // Save data to pets
+      console.log('User pet data');
+      console.log(data);
+      pets = data;
+
+      //Save pet adoptions to user.adoptions
+      if(data){
+        data.forEach(dataItem => {
+          if(dataItem.adoptions.length>0){
+            user.show_adoptions.push(dataItem.adoptions);
+          }
+        });
+      }
+
+      console.log('user.show_adoptions');
+      console.log(user.show_adoptions);
+      renderHtmlAfterUserLoad();
+    });
+
   });
 
   //Get pet statistics
   var stats = {};
-
   // Get pets by query data
-  function renderHtmlAfterUserLoad(r){
-    mongobasics.selectall("pet", function(data) {
+  function renderHtmlAfterUserLoad(){
+    let limit = 3;
+
+    let condition={};
+    mongobasics.selectall("pet",limit,condition, function(data){
       pets = data;
-      pets=pets.slice(0,3);
-      console.log('Pets page mongo');
+      console.log('Latest 3 pets data');
       console.log(pets);
       var header_image = "/images/repo/petcare-large.jpg";
       res.render('index', { title: 'FosterPet - Home ' ,pets, stats,header_image,user});
     });
+  
 }
 
 });
