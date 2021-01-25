@@ -35,41 +35,47 @@ const mongobasics = {
     
   },
 
-  insertone: function(collectionName, values,callback) {
-      mongoose.model(collectionName).insertOne(values, function(err) {
-          if (err) {
-              console.log(err);
-              return err;
-            }
+  insertone: function(collectionName, object,callback) {
+      console.log("mongobasics.insertone");
+      mongoose.model(collectionName).create(object, function(err, result) {
+        if (err) {
+          console.log(err);
+          return err;
+        } else {
+          console.log(result);
+          callback(result);
+        }
       });
+
       console.log("DB insertion.");
       callback("DB insertion.");
   },
 
-  updateone: function(collectionName, condition, values, callback) {
-      mongoose.model(collectionName).updateOne(
-          { _id: condition },
-          values,
-          function(err) {
+  updateone: function(collectionName, object, callback) {
+    console.log("mongobasics.updateone");
+      mongoose.model(collectionName).updateOne(object,function(err,result) {
               if (err) {
-                  console.log('err');
-                  console.log(err);
-                  return err;
-                }
+                console.log(err);
+                return err;
+              } else {
+                console.log(result);
+                callback(result);
+              }
           }
 
       );
-      callback('Update success');
   },
 
 
-  delete: function(collectionName, condition) {
-      db.collection(collectionName).deleteMany(condition, function(err){
+  delete: function(collectionName, object,callback) {
+    console.log("mongobasics.deleteOne");
+    console.log(object);
+      db.collection(collectionName).deleteOne(object, function(err){
           if (err) {
               console.log(err);
               return err;
             }
-            console.log("DB delete.");
+            callback("DB delete.");
       });
 
   },

@@ -12,8 +12,6 @@ const ArticleSchema = new Schema({
     name:{ type: String, default: '' },
     userID: {type: Number, ref: User},
     categoryID :{type: Number, ref: ArticleCategory},
-    age_year: { type: Number, default: null },
-    age_month: { type: Number, default: null },
     short_desc: { type: String, default: 3 },
     description: { type: String, default: 3 },
     created_at:  { type: String, default: Date.now },

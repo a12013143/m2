@@ -154,8 +154,8 @@ router.get('/:articleId', function(req, res) {
   function renderHtmlAfterCategoriesLoad(){
    
     if(articleId == "new"){
-      article = {ID : 0, profile_img_url:"/images/pawprint-blue.png"};
-      var header_image = pet.profile_img_url;
+      article = {_id : 0, profile_img_url:"/images/pawprint-blue.png"};
+      var header_image = article.profile_img_url;
       res.render('article', { title: 'Articles - New',categories,article,header_image,user});
     }else{
       //pet = pets[petId-1];
@@ -191,24 +191,11 @@ router.post('/', function(req, res) {
   console.log(req.body);
 
   let maxrowID = 0;
-  _article.getmaxid(function(data) {
-    maxrowID = data[0].ID + 1;
+  // mongobasics.getmaxid(function(data) {
+  //   maxrowID = data[0].ID + 1;
 
     var vals = req.body;
-    var keys = Object.keys(req.body);
-    var i =0;
-    keys.forEach(function(key){;
-      var str = ['name','author','short_desc','description','profile_img_url'];
-        if(!vals[key] && !str.includes(key) ){
-          vals[key] = 'null';
-        }
-    }) 
-
-    //7, "Article Title", "Author Name", "'+desc1+'","'+short_desc1+'", 1, "01/11/2021", "01/11/2021", 1, "'+imgurl+'"
-    let querytemp = '(' + maxrowID + ', "' + vals.name +'", "' + vals.author + '", "' + vals.description + '", "' + vals.short_desc + '", ' + vals.userID + ', "' + vals.created_at + '", "' + vals.updated_at+ '", '  + vals.categoryID + ', ' + /*req.body.profile_img_url + '"'*/ '"/images/repo/petcare-large.jpg"';
-    console.log('querytemp')
-    console.log(querytemp)
-    mongobasics.insertone("article" , querytemp, function(data) {
+    mongobasics.insertone("article" , vals, function(data) {
       categories = data;
       console.log('mongobasics.insertone');
       console.log(data);
@@ -221,7 +208,7 @@ router.post('/', function(req, res) {
         });
       }
     });
-  });
+  // });
 });
 
 
@@ -231,15 +218,11 @@ router.put('/:ID', function(req, res) {
   console.log('req.body articles put');
   console.log(req.body);
 
-  var articleId = req.body.ID;
-  var condition = 'ID = ' + articleId;
+  var obj = req.body;
 
-  var columns = Object.keys(req.body);
-  var values = Object.values(req.body);
+  mongobasics.updateone("article" , obj, function(data) {
 
-  mongobasics.updateone("article" , columns, values, condition, function(data) {
     categories = data;
-    console.log('mongobasics.updateone');
     console.log(data);
 
     if (data){
@@ -255,11 +238,12 @@ router.put('/:ID', function(req, res) {
 
 /** DELETE */
 router.delete('/:id', function(req, res) {
+  
   let articleId = req.params.id;
-  let condition = 'ID = ' + articleId;
+  let object = {_id:parseInt(articleId)};
 
   console.log('Delete article');
-  mongobasics.delete("article", condition, function(data){  
+  mongobasics.delete("article", object, function(data){  
     console.log('mongobasics.delete');  
     console.log(data);
 
