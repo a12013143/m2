@@ -33,8 +33,16 @@ router.get('/', function(req, res, next) {
       //Save pet adoptions to user.adoptions
       if(data){
         data.forEach(dataItem => {
-          if(dataItem.adoptions.length>0){
-            user.show_adoptions.push(dataItem.adoptions);
+          if(dataItem.adoptions.length>0){   
+            
+            //set adoptions petname
+             let i = 0;
+              dataItem.adoptions.forEach(adoption => {
+              dataItem.adoptions[i].petName = dataItem.name
+              i++;
+            });
+
+            user.show_adoptions=user.show_adoptions.concat(dataItem.adoptions);
           }
         });
       }
