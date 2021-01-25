@@ -10,10 +10,89 @@ const db = connection.db;
 const mongobasics = {
 
   // PUT your basic queries HERE
+  selectall: function(collectionName, callback) {
+    db.collection(collectionName).find({}).toArray(function(err, result) {
+        if (err) {
+            console.log(err);
+            return err;
+          };
+        console.log("DB select all query.");
+        callback(result);
+    });
+    
+  },
 
-  initialInsert: function(table,callback) {
+  selectone: function(collectionName, id, callback) {
+      db.collection(collectionName).find({_id: id }).toArray(function(err, result) {
+          if (err) {
+              console.log(err);
+              return err;
+            };
+          console.log("DB select one query.");
+          callback(result);
+      });
+    
+  },
+
+  insertone: function(collectionName, values,callback) {
+      mongoose.model(collectionName).insertOne(values, function(err) {
+          if (err) {
+              console.log(err);
+              return err;
+            }
+      });
+      console.log("DB insertion.");
+      callback("DB insertion.");
+  },
+
+  updateone: function(collectionName, condition, values, callback) {
+      mongoose.model(collectionName).updateOne(
+          { _id: condition },
+          values,
+          function(err) {
+              if (err) {
+                  console.log('err');
+                  console.log(err);
+                  return err;
+                }
+          }
+
+      );
+      callback('Update success');
+  },
+
+
+  delete: function(collectionName, condition) {
+      db.collection(collectionName).deleteMany(condition, function(err){
+          if (err) {
+              console.log(err);
+              return err;
+            }
+            console.log("DB delete.");
+      });
+
+  },
+
+
+  getmaxid: function(collectionName, callback) {
+      let result = db.collection(collectionName).find({}).sort({"_id":-1}).limit(1);
+      callback(result);
+  },
+
+  initialInsert: function(collectionName,callback) {
     console.log('sqlitebasics.initialInsert')
     connection.initialInsert(function(err, result) {
+      if (err) {
+        console.log(err);
+        return err;
+      }
+      callback(result);
+    });
+  },
+
+  migrateFromSqlite: function(collectionName,callback) {
+    console.log('sqlitebasics.initialInsert')
+    connection.migrateFromSqlite(function(err, result) {
       if (err) {
         console.log(err);
         return err;
