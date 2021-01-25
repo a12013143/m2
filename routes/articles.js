@@ -2,8 +2,7 @@ var express = require('express');
 const connection = require('../config/connection');
 const sqlitebasics = require('../config/sqlitebasics');
 var router = express.Router();
-var _article = require('../models/article.js')
-var _adoption = require('../models/adoption.js')
+var _article = require('../models/article.js');
 
 
 

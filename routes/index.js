@@ -1,7 +1,6 @@
 var express = require('express');
-const sqlitebasics = require('../config/sqlitebasics');
-var _pet = require('../models/pet.js');
-var _adoption = require('../models/adoption.js');
+const mongobasics = require('../confignosql/mongobasics');
+var _pet = require('../modelsnosql/pet.js');
 var router = express.Router();
 
 // -- END TEST MYSQL, delete after --------------------------------
@@ -17,20 +16,21 @@ router.get('/', function(req, res, next) {
     userID=1;
   }
   var user = {ID:userID}
-  sqlitebasics.selectone("user",userID, function(data) {
+  mongobasics.selectone("user",userID, function(data) {
     user = data[0];
-    console.log('user');
+    console.log('user mongo');
     console.log(user);
     condition={userID};    
-    _adoption.selectall("adoption",condition, function(data) {
-      if(user && data){
-        user.adoptions = data;
-        user.show_adoptions = user.adoptions.slice(0,3);
-        console.log('show_adoptions');
-        console.log(user.show_adoptions);
-      }
-      renderHtmlAfterUserLoad();
-    });
+    renderHtmlAfterUserLoad();
+    // _adoption.selectall("adoption",condition, function(data) {
+    //   if(user && data){
+    //     user.adoptions = data;
+    //     user.show_adoptions = user.adoptions.slice(0,3);
+    //     console.log('show_adoptions');
+    //     console.log(user.show_adoptions);
+    //   }
+    //   renderHtmlAfterUserLoad();
+    // });
   });
 
   //Get pet statistics
@@ -38,11 +38,11 @@ router.get('/', function(req, res, next) {
 
   // Get pets by query data
   function renderHtmlAfterUserLoad(r){
-    sqlitebasics.selectall("pet", function(data) {
+    mongobasics.selectall("pet", function(data) {
       pets = data;
       pets=pets.slice(0,3);
-      console.log('Pets page');
-      //console.log(pets);
+      console.log('Pets page mongo');
+      console.log(pets);
       var header_image = "/images/repo/petcare-large.jpg";
       res.render('index', { title: 'FosterPet - Home ' ,pets, stats,header_image,user});
     });
@@ -73,7 +73,7 @@ router.get('/profile/:userId', function(req, res, next) {
     userID=1;
   }
   user = {ID:userID}
-  sqlitebasics.selectone("user",userID, function(data) {
+  mongobasics.selectone("user",userID, function(data) {
     user = data[0];
     console.log('user');
     console.log(user);
@@ -101,7 +101,7 @@ router.get('/profile/:userId', function(req, res, next) {
 /* Insert initial data*/
 router.post('/initialInsert', function(req, res, next) {
   console.log('Insert initial data');
-  sqlitebasics.initialInsert("", function(data) {
+  mongobasics.initialInsert("", function(data) {
     res.status(200).json(data);
   });
 }); 

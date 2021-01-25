@@ -2,7 +2,6 @@ var express = require('express');
 const sqlitebasics = require('../config/sqlitebasics');
 var router = express.Router();
 var _pet = require('../models/pet.js');
-var _adoption = require('../models/adoption.js');
 
 
 // // hardcoded user data

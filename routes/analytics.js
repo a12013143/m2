@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var sqlitebasics = require('../config/sqlitebasics.js');
-var _adoption = require('../models/adoption.js');
 var _analytics = require('../models/analytics.js');
 var _pet = require('../models/pet.js');
 

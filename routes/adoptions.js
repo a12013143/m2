@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var _adoption = require('../models/adoption.js');
+var _pet = require('../models/pet.js');
 
-const connection = require('../config/connection');
-const sqlitebasics = require('../config/sqlitebasics');
+const connection = require('../confignosql/connection');
+const mongobasics = require('../confignosql/mongobasics');
 
 // hardcoded user data
 var user = {
@@ -85,9 +85,9 @@ router.post('/', function(req, res) {
     let querytemp = '(' + maxrowID + ', ' + vals.userID +', ' + vals.petID + ', "' + vals.description + '", "Initiated", "' + vals.created_at + '", "' + vals.updated_at+ '"';
     console.log('querytemp')
     console.log(querytemp)
-    sqlitebasics.insertone("adoption" , querytemp, function(data) {
+    mongobasics.insertone("adoption" , querytemp, function(data) {
       categories = data;
-      console.log('sqlitebasics.insertone');
+      console.log('mongobasics.insertone');
       console.log(data);
   
       if (data){
@@ -117,9 +117,9 @@ router.put('/:ID', function(req, res) {
   var columns = Object.keys(req.body);
   var values = Object.values(req.body);
 
-  sqlitebasics.updateone("adoption" , columns, values, condition, function(data) {
+  mongobasics.updateone("adoption" , columns, values, condition, function(data) {
     categories = data;
-    console.log('sqlitebasics.updateone');
+    console.log('mongobasics.updateone');
     console.log(data);
 
     if (data){
@@ -139,8 +139,8 @@ router.delete('/:id', function(req, res) {
   let condition = 'ID = ' + adoptionId;
 
   console.log('Delete adoption');
-  sqlitebasics.delete("adoption", condition, function(data){  
-    console.log('sqlitebasics.delete');  
+  mongobasics.delete("adoption", condition, function(data){  
+    console.log('mongobasics.delete');  
     console.log(data);
 
     if (data){
