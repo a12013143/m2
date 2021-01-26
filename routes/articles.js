@@ -2,7 +2,7 @@ var express = require('express');
 const connection = require('../confignosql/connection');
 const mongobasics = require('../confignosql/mongobasics');
 var router = express.Router();
-var _article = require('../models/article.js');
+var _article = require('../modelsnosql/article.js');
 
 
 
@@ -71,24 +71,48 @@ router.get('/', function(req, res) {
  });
  
   // Get pets by query data (filter)
-  function renderHtmlAfterCategoriesLoad(){
-    let condition = {};
-    if(req.query.category){
-      condition.category = req.query.category;
-    }
-    if(req.query.keyword){
-      condition.keyword = req.query.keyword;
-    }
 
-    // CHANGE THIS TO RETURN PETS FILTERED
-    mongobasics.selectall("article" , null ,condition,function(data) {
-      articles = data;
-      console.log('Article page articles');
-      console.log(data);
+  // Get pets by query data (filter)  
+  function renderHtmlAfterCategoriesLoad(){
+
+    let conditions = {};
+    
+    conditions.category={};
+    if(req.query.category){
+      conditions.category = {
+        categoryID: {$eq: req.query.category }           
+      }
+    }
+    conditions.keyword={};
+    if(req.query.keyword){  
+      let tempcondition = new RegExp(req.query.keyword, "i");  
+      conditions.keyword ={
+        $or: [
+        {name:  tempcondition },
+        {short_desc:  tempcondition },
+        {description: tempcondition }
+      ]};
+    }
+    
+    _article.find({$and: [
+      conditions.category,
+      conditions.keyword
+      ]
+      }, function(err, result) {
+          if (err) {
+              console.log(err);
+          return err;
+      }
+      articles = result;
+
+      console.log("Article page articles");
+      console.log(articles);
       var header_image = "/images/repo/ronald.jpg";
+      let condition = req.query;
       res.render('articles', { title: 'Articles' ,articles,categories,condition,header_image,user});
-    });
-  }
+
+  });
+};
 });
 
  /** GET by articleId*/

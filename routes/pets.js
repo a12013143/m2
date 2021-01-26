@@ -69,25 +69,47 @@ router.get('/', function(req, res) {
     });
   });
 
-  // Get pets by query data (filter)
+  // Get pets by query data (filter)  
   function renderHtmlAfterCategoriesLoad(){
-    let condition = {};
-    if(req.query.category){
-      condition.category = req.query.category;
-    }
-    if(req.query.keyword){
-      condition.keyword = req.query.keyword;
-    }
 
-    // CHANGE THIS TO RETURN PETS FILTERED
-    mongobasics.selectall("pet" , null ,condition,function(data) {
-      pets = data;
-      console.log('Pets page pets');
-      console.log(data);
-      var header_image = "/images/repo/ronald.jpg";
-      res.render('pets', { title: 'Pets' ,pets,categories,condition,header_image,user});
+      let conditions = {};
+      
+      conditions.category={};
+      if(req.query.category){
+        conditions.category = {
+          categoryID: {$eq: req.query.category }           
+        }
+      }
+      conditions.keyword={};
+      if(req.query.keyword){  
+        let tempcondition = new RegExp(req.query.keyword, "i");  
+        conditions.keyword ={
+          $or: [
+          {name:  tempcondition },
+          {short_desc:  tempcondition },
+          {description: tempcondition }
+        ]};
+      }
+      
+      _pet.find({$and: [
+        conditions.category,
+        conditions.keyword
+        ]
+        }, function(err, result) {
+            if (err) {
+                console.log(err);
+            return err;
+        }
+        pets = result;
+  
+        console.log("Pets page pets");
+        console.log(pets);
+        var header_image = "/images/repo/ronald.jpg";
+        let condition = req.query;
+        res.render('pets', { title: 'Pets' ,pets,categories,condition,header_image,user});
+
     });
-  }
+  };
 });
 
 /** GET by petID */

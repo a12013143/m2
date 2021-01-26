@@ -66,7 +66,6 @@ const mongobasics = {
       );
   },
 
-
   delete: function(collectionName, condition,callback) {
     console.log("mongobasics.deleteOne");
     console.log(condition);
@@ -77,7 +76,6 @@ const mongobasics = {
             }
             callback("DB delete.");
       });
-
   },
 
 
