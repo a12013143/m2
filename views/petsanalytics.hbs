@@ -56,9 +56,9 @@
               <table id="analytics-table" class="table align-items-center table-flush">
                 <thead class="thead-light">
                   <tr>
-                    <th scope="col" class="sort" data-sort="adoptions"Adoptions</th>
+                    <th scope="col" class="sort" data-sort="adoptions">Adoptions</th>
                     <th scope="col" class="sort" data-sort="adopters">Adopters</th>
-                    <th scope="col" class="sort" data-sort="favourite">Favourite (Liked)</th>
+                    {{!-- <th scope="col" class="sort" data-sort="favourite">Favourite (Liked)</th> --}}
                     <th scope="col" class="sort" data-sort="favourited_by"> Favouriters </th>
                      <th scope="col" class="sort" data-sort="status">Status</th>
                       <th scope="col" class="sort" data-sort="category">Category</th>                      
@@ -73,17 +73,17 @@
                     <td>
                       {{this._id.adopters}}
                     </td>
+                    {{!-- <td>
+                      {{this.favourite}}
+                    </td> --}}
                     <td>
-                      {{this._id.favourite}}
-                    </td>
-                    <td>
-                      {{this.fans}}
+                      {{this._id.fans}}
                     </td>
                     <td>
                       {{this._id.status}}
                     </td>
                     <td>
-                      {{this._id.categoryID}}
+                      {{this._id.category}}
                     </td>
                   </tr>
                   {{/each}}

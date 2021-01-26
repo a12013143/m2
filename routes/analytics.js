@@ -199,14 +199,26 @@ router.get('/pets/', function(req, res) {
       [{ 
         $match :{$and:  [conditions.neutered,conditions.keyword,conditions.category]}
        },
-      { $unwind : "$adoptions" },
-      // { $unwind :  "$favourited_by" },     
+      // { $unwind : "$adoptions" },
+      // { $unwind :  "$favourited_by" },   
+      {$lookup:
+            {
+              from: "pet_category",
+              localField: "categoryID",
+              foreignField: "_id",
+              as: "categories"
+            }  },
+      { $unwind :  "$categories" },
       {
         $group:{
-        _id: {status:"$adoptions.status", categoryID : "$categoryID",favourited_by : "$favourited_by",
-        favourite:{ $cond: { if: {$ne: [ "$favourited_by", [] ]}, then: 'Yes', else: 0 } } },
-        fans:{ $sum:{$cond: { if: {$ne: [ "$favourited_by", [] ]}, then: 1, else: 0 } } },
-        adoptions:{$sum:1}        
+        _id: {
+          status:{$cond: { if: {$ne:["$adoptions",[]]},then:"$adoptions.status",else:"No adoption requests"}}, categoryID : "$categoryID",
+          category : "$categories.name",
+          fans:{$size: "$favourited_by"},
+          adopters:{$cond: { if: {$ne:["$adoptions",[]]},then:{$size:"$adoptions"},else:null}},
+        },
+        favourite:{ $sum:{$cond: { if: {$ne: [ "$favourited_by", [] ]}, then: 1, else: 0 } } },
+        adoptions:{$sum:1} ,
        }
       } ],function(err,data) {
 
