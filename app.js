@@ -49,7 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/pets', petsRouter);
 app.use('/articles', articlesRouter);
-app.use('/adoptions', adoptionsRouter);
+app.use('/pets/:petId([0-9]{1,10})/adoptions', adoptionsRouter);
 app.use('/analytics', analyticsRouter);
 app.use('/users', usersRouter);
 

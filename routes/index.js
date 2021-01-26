@@ -100,11 +100,11 @@ router.get('/register', function(req, res, next) {
 router.get('/profile/:userId?', function(req, res, next) {
   console.log('Profile page');
 
-  var userID = req.params.userId;
+  var userID = req.query.userId;
   if(!userID){
     userID=1;
   }
-  user = {ID:userID}
+  user = {_id:userID}
   mongobasics.selectone("user",userID, function(data) {
     user = data[0];
     if(!user){

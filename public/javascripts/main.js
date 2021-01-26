@@ -131,7 +131,7 @@
         //-------------CRUD ADOPTION------------------------------------------------//
         //Add article
          $('#add-adoption-form').on('submit', function(e) {
-             console.log(e);
+            console.log(e);
             console.log("TEST");
             e.preventDefault();
             
@@ -145,7 +145,7 @@
             data.updated_at = date;
             
             $.ajax({
-            url: "/pets/"+data.petID+"adoptions/",
+            url: "/pets/"+data.petID+"/adoptions/",
             type: "PUT",
             data: JSON.stringify(data),
             contentType: "application/json",
@@ -158,7 +158,7 @@
             },
             error: function(error) {
                 console.log(error);
-                $('.alert').removeClass('d-none').addClass('alert-danger').text("An error ocurred. Try again.").show();
+                $('.alert').removeClass('d-none').addClass('alert-danger').text(error.responseJSON.message).show();
                 window.setTimeout(function(){
                    $('.alert').addClass('d-none').removeClass('alert-danger');
                 },1500);
@@ -167,7 +167,7 @@
         });
 
         //update-adoption-status
-        $('#update-adoption').on('submit',function(e){
+        $('.update-adoption').on('submit',function(e){
             
             e.preventDefault();
             
@@ -181,7 +181,7 @@
             // data._id = data.ID;
 
             $.ajax({
-            url: "pets/adoptions/",
+            url: "/pets/"+data.petID+"/adoptions/"+data._id,
             type: "PUT",
             data: JSON.stringify(data),
             contentType: "application/json",

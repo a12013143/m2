@@ -19,7 +19,7 @@ const mongobasics = {
           };
         console.log("DB select all query.");
         callback(result);
-    }).limit(limit);
+    }).limit(limit).sort({_id: 'descending'});
     
   },
 
