@@ -164,7 +164,7 @@ router.post('/', function(req, res) {
 
 /** PUT */ 
 // Not used
-router.put('/:id', function(req, res) {
+router.put('/:id([0-9]{1,10})', function(req, res) {
 
   console.log('req.body analytics put');
   console.log(req.body);
@@ -191,7 +191,7 @@ router.put('/:id', function(req, res) {
 
 /** DELETE */
 // Nou used currently
-router.delete('/delete/:id', function(req, res) {
+router.delete('/delete/:id([0-9]{1,10})', function(req, res) {
   var analyticId = req.params.id;
   var condition = 'id = ' + analyticId;
   

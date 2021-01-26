@@ -51,9 +51,9 @@ const mongobasics = {
       callback("DB insertion.");
   },
 
-  updateone: function(collectionName, object, callback) {
+  updateone: function(collectionName, condition,object, callback) {
     console.log("mongobasics.updateone");
-      mongoose.model(collectionName).updateOne(object,function(err,result) {
+      mongoose.model(collectionName).updateOne(condition,object,function(err,result) {
               if (err) {
                 console.log(err);
                 return err;
@@ -67,10 +67,10 @@ const mongobasics = {
   },
 
 
-  delete: function(collectionName, object,callback) {
+  delete: function(collectionName, condition,callback) {
     console.log("mongobasics.deleteOne");
-    console.log(object);
-      db.collection(collectionName).deleteOne(object, function(err){
+    console.log(condition);
+      db.collection(collectionName).deleteOne(condition, function(err){
           if (err) {
               console.log(err);
               return err;

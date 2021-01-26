@@ -92,9 +92,9 @@ router.get('/', function(req, res) {
 });
 
  /** GET by articleId*/
-router.get('/:articleId', function(req, res) {
+router.get('/:id([0-9]{1,10})', function(req, res) {
 
-  var articleId = req.params.articleId;
+  var articleId = req.params.id;
   console.log('Get articles get by articleId');
   console.log(req.session);
   var categories = [];
@@ -151,13 +151,7 @@ router.get('/:articleId', function(req, res) {
   });
   
 
-  function renderHtmlAfterCategoriesLoad(){
-   
-    if(articleId == "new"){
-      article = {_id : 0, profile_img_url:"/images/pawprint-blue.png"};
-      var header_image = article.profile_img_url;
-      res.render('article', { title: 'Articles - New',categories,article,header_image,user});
-    }else{
+  function renderHtmlAfterCategoriesLoad(){   
       //pet = pets[petId-1];
         mongobasics.selectone('article',articleId, function(data) {
         article = data[0];
@@ -176,12 +170,73 @@ router.get('/:articleId', function(req, res) {
           }
           res.render('article', { title: title,article,categories,header_image,user});
         }
-        
       });
-    }
   }
- 
 });
+
+ /** New article view render*/
+router.get('/new', function(req, res) {
+
+  var categories = [];
+  var pet={};
+  var userID = req.query.userId;
+  if(!userID){
+    userID=1;
+  }
+  var user = {ID:userID}
+  mongobasics.selectone("user",userID, function(data) {
+    user = data[0];
+    if(!user){
+      console.log("\nres.redirect('/register')\n");
+      res.redirect('/register');
+      return;
+    }
+    
+    let condition={ownerID: userID};
+    mongobasics.selectall("pet",null,condition, function(data){
+      user.adoptions = [];
+
+      //Get pets to get adoptions
+      pets = data;
+      //Save pet adoptions to user.adoptions
+      if(data){
+        data.forEach(dataItem => {
+          if(dataItem.adoptions.length>0){ 
+            //set adoptions petname
+             let i = 0;
+              dataItem.adoptions.forEach(adoption => {
+              dataItem.adoptions[i].petName = dataItem.name;              
+              dataItem.adoptions[i].profile_img_url = dataItem.profile_img_url;
+              i++;
+            });
+            user.adoptions=user.adoptions.concat(dataItem.adoptions);
+          }
+        });
+      }
+
+      //user adoptions
+      user.show_adoptions= user.adoptions.slice(0,3);
+      console.log('user.show_adoptions');
+      console.log(user.show_adoptions);    
+
+      // Get categories
+      var condition = {};
+      mongobasics.selectall("article_cat" , null ,condition,function(data) {
+        categories = data;
+        console.log('Article page categories');
+        console.log(data);
+        renderHtmlAfterCategoriesLoad();
+      }, {}); 
+
+    });
+  });
+
+  function renderHtmlAfterCategoriesLoad(){
+    article = {_id : 0, profile_img_url:"/images/ronald.png"};
+    var header_image = article.profile_img_url;
+    res.render('article', { title: 'Articles - New',categories,article,header_image,user});
+  }
+ });
 
 
 /** POST */
@@ -213,14 +268,16 @@ router.post('/', function(req, res) {
 
 
 /** PUT */
-router.put('/:ID', function(req, res) {
+router.put('/:id([0-9]{1,10})', function(req, res) {
 
   console.log('req.body articles put');
   console.log(req.body);
 
+  let articleId = req.params.id;
+  let condition = {"_id": articleId};
   var obj = req.body;
 
-  mongobasics.updateone("article" , obj, function(data) {
+  mongobasics.updateone("article" ,condition, obj, function(data) {
 
     categories = data;
     console.log(data);
@@ -237,7 +294,7 @@ router.put('/:ID', function(req, res) {
 });
 
 /** DELETE */
-router.delete('/:id', function(req, res) {
+router.delete('/:id([0-9]{1,10})', function(req, res) {
   
   let articleId = req.params.id;
   let object = {_id:parseInt(articleId)};

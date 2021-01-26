@@ -10,7 +10,6 @@ var petsRouter = require('./routes/pets');
 var articlesRouter = require('./routes/articles');
 var adoptionsRouter = require('./routes/adoptions');
 var analyticsRouter = require('./routes/analytics');
-var favouritesRouter = require('./routes/favourites');
 var usersRouter = require('./routes/users');
 
 var app = express();
@@ -52,7 +51,6 @@ app.use('/pets', petsRouter);
 app.use('/articles', articlesRouter);
 app.use('/adoptions', adoptionsRouter);
 app.use('/analytics', analyticsRouter);
-app.use('/favourites', favouritesRouter);
 app.use('/users', usersRouter);
 
 
@@ -71,6 +69,8 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500 );
   res.render('error');
+  
+  
 });
 
 module.exports = app;

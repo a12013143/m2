@@ -131,6 +131,7 @@
         //-------------CRUD ADOPTION------------------------------------------------//
         //Add article
          $('#add-adoption-form').on('submit', function(e) {
+             console.log(e);
             console.log("TEST");
             e.preventDefault();
             
@@ -144,8 +145,8 @@
             data.updated_at = date;
             
             $.ajax({
-            url: "/adoptions/",
-            type: "POST",
+            url: "/pets/"+data.petID+"adoptions/",
+            type: "PUT",
             data: JSON.stringify(data),
             contentType: "application/json",
             success: function(data, status) {
@@ -177,9 +178,10 @@
             var dateArray= d.toLocaleDateString("en-US").split("/");
             var date= ('0' + dateArray[0]).slice(-2) + '/' + ('0' + dateArray[1]).slice(-2) + '/' + dateArray[2];
             data.updated_at = date;
+            // data._id = data.ID;
 
             $.ajax({
-            url: "/adoptions/"+ data.ID,
+            url: "pets/adoptions/",
             type: "PUT",
             data: JSON.stringify(data),
             contentType: "application/json",
