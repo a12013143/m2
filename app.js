@@ -12,6 +12,8 @@ var adoptionsRouter = require('./routes/adoptions');
 var analyticsRouter = require('./routes/analytics');
 var usersRouter = require('./routes/users');
 
+var mongobasics = require('./confignosql/mongobasics');
+
 var app = express();
 
 /** Handlebars helpers */
@@ -45,6 +47,79 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+
+app.use(function (req, res, next) {
+
+  var categories = [];  
+
+  // HEADER USER
+ var userID = req.query.userId;
+ if(!userID){
+   userID=1;
+ }
+ var user = {ID:userID}
+ mongobasics.selectone("user",userID, function(data) {
+   user = data[0];
+   if(!user){
+     console.log("\nres.redirect('/register')\n");
+     res.redirect('/register');
+     return;
+   }
+   // HEADER peT ADOPTION REQUESTS
+
+   let condition={ownerID: userID};
+   mongobasics.selectall("pet",null,condition, function(data){
+     user.adoptions = [];
+
+     //Get pets to get adoptions
+     pets = data;
+     //Save pet adoptions to user.adoptions
+     if(data){
+       data.forEach(dataItem => {
+         if(dataItem.adoptions.length>0){ 
+           //set adoptions petname
+            let i = 0;
+             dataItem.adoptions.forEach(adoption => {
+             dataItem.adoptions[i].petName = dataItem.name;              
+             dataItem.adoptions[i].profile_img_url = dataItem.profile_img_url;
+             i++;
+           });
+           user.adoptions=user.adoptions.concat(dataItem.adoptions);
+         }
+       });
+     }
+
+     //user adoptions
+     user.show_adoptions= user.adoptions.slice(0,3);
+
+     // Get categories
+     var condition = {};
+     mongobasics.selectall("pet_category" , null ,condition,function(data) {
+       res.categories = data;
+     }); 
+
+     mongobasics.selectall("article_cat" , null ,condition,function(data) {
+      res.article_categories = data;
+    }); 
+
+    res.user = user;
+    next();
+
+   });
+ });
+
+
+  // Item.count({"author.id":req.user.id}, (err, itemCount)=>{
+  //    if(err){
+         
+  //    } else {
+  //       req.Count = JSON.stringify(itemCount);
+       
+  //    }
+  // });    
+});
 
 app.use('/', indexRouter);
 app.use('/pets', petsRouter);

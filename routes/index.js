@@ -12,73 +12,18 @@ router.get('/', function(req, res, next) {
   console.log('req.query pets get');
   console.log(req.query);
 
-  var userID = req.query.userId;
-  if(!userID){
-    userID=1;
-  }
-  var user = {ID:userID}
-  mongobasics.selectone("user",userID, function(data) {
-    user = data[0];
-    if(!user){
-      console.log("\nres.redirect('/register')\n");
-      res.redirect('/register');
-      return;
-    }
-     
-    console.log('user mongo');
-    console.log(user);
-
-    let condition={ownerID: userID};
-    mongobasics.selectall("pet",null,condition, function(data){
-      user.adoptions = [];
-
-      // Save data to pets
-      // console.log('User pet data');
-      // console.log(data);
-      pets = data;
-
-      //Save pet adoptions to user.adoptions
-      if(data){
-        data.forEach(dataItem => {
-          if(dataItem.adoptions.length>0){   
-            
-            //set adoptions petname
-             let i = 0;
-              dataItem.adoptions.forEach(adoption => {
-              dataItem.adoptions[i].petName = dataItem.name;              
-              dataItem.adoptions[i].profile_img_url = dataItem.profile_img_url;
-              i++;
-            });
-
-            user.adoptions=user.adoptions.concat(dataItem.adoptions);
-          }
-        });
-      }
-
-      user.show_adoptions= user.adoptions.slice(0,3);
-      console.log('user.show_adoptions');
-      console.log(user.show_adoptions);
-      renderHtmlAfterUserLoad();
-    });
-
-  });
-
-  //Get pet statistics
-  var stats = {};
   // Get pets by query data
-  function renderHtmlAfterUserLoad(){
-    let limit = 3;
-
-    let condition={};
-    mongobasics.selectall("pet",limit,condition, function(data){
-      pets = data;
-      // console.log('Latest 3 pets data');
-      // console.log(pets);
-      var header_image = "/images/repo/petcare-large.jpg";
-      res.render('index', { title: 'FosterPet - Home ' ,pets, stats,header_image,user});
-    });
-  
-}
+  let limit = 3;
+  let condition={};
+  mongobasics.selectall("pet",limit,condition, function(data){
+    pets = data;
+    // console.log('Latest 3 pets data');
+    // console.log(pets);
+    var header_image = "/images/repo/petcare-large.jpg";
+    let user = res.user;
+    let stats= {};
+    res.render('index', { title: 'FosterPet - Home ' ,pets, stats,header_image,user});
+  });
 
 });
 
@@ -98,62 +43,11 @@ router.get('/register', function(req, res, next) {
 
 /* GET profile page. */
 router.get('/profile/:userId?', function(req, res, next) {
-  console.log('Profile page');
 
-  var userID = req.query.userId;
-  if(!userID){
-    userID=1;
-  }
-  user = {_id:userID}
-  mongobasics.selectone("user",userID, function(data) {
-    user = data[0];
-    if(!user){
-      console.log("\nres.redirect('/register')\n");
-      res.redirect('/register');
-      return;
-    }
-     
-    console.log('user');
-    console.log(user);
-
-    let condition={ownerID: userID};
-    mongobasics.selectall("pet",null,condition, function(data){
-      user.adoptions = [];
-      pets = data;
-      //Save pet adoptions to user.adoptions
-      if(data){
-        data.forEach(dataItem => {
-          if(dataItem.adoptions.length>0){   
-            
-            //set adoptions petname
-             let i = 0;
-              dataItem.adoptions.forEach(adoption => {
-              dataItem.adoptions[i].petID = dataItem._id;
-              dataItem.adoptions[i].petName = dataItem.name;
-              dataItem.adoptions[i].pet_profile_img_url = dataItem.profile_img_url;
-              dataItem.adoptions[i].profile_img_url = user.profile_img_url;
-              i++;
-            });
-
-            user.adoptions=user.adoptions.concat(dataItem.adoptions);
-          }
-        });
-      }
-
-      user.show_adoptions=  user.adoptions;
-      console.log('user.adoptions');
-      console.log(user.adoptions);
-      renderHtmlAfterUserLoad();
-    });
-    
-  });
-
-
-  function renderHtmlAfterUserLoad(){
-    var show_adoptions_param = req.query.showAdoptions;
-    var edit_param = req.query.edit;
-    res.render('profile', {title:user.name,user,show_adoptions_param,edit_param});
-  }
+  var show_adoptions_param = req.query.showAdoptions;
+  var edit_param = req.query.edit;
+  let user = res.user;
+  res.render('profile', {title:user.name,user,show_adoptions_param,edit_param});
   
 }); 
 
