@@ -161,7 +161,7 @@
                                 <i class="fas fa-ellipsis-v"></i>
                               </a>
                               <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                <form id="update-adoption" method="put" action="pets/adoptions/"> 
+                                <form class="update-adoption" method="put" action="/pets/{{this.petID}}/adoptions/{{this._id}}"> 
                                     <input type="hidden" readonly class="form-control" name="petID" value="{{this.petID}}">
                                     <input type="hidden" readonly class="form-control" name="_id" value="{{this._id}}">
                                     <div class="form-group p-3 m-0">
