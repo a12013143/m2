@@ -69,16 +69,26 @@ router.get('/', function(req, res) {
   function renderHtmlAfterLoad(){
     console.log('renderHtmlAfterLoad');
 
-    var condition = {};
-    if(req.query.start_date){
-      condition.start_date = req.query.start_date;
-    }
-    if(req.query.end_date){
-      condition.end_date = req.query.end_date;
-    }
+    var conditions={};
+    conditions.created_at={};
+
+    // if(req.query.start_date){
+    //   conditions.created_at.$gte=new Date(req.query.start_date);
+    // }
+
+    // if(req.query.end_date){
+    //   conditions.created_at.$lte=new Date(req.query.end_date);
+    // }
+
+    console.log("conditions");
+    console.log(conditions);
 
      _analytics.aggregate(
-       [{
+       [
+        {
+          $match:conditions.created_at
+        } ,
+        {
          $group:{
          _id: "$url",
          time:{$sum:"$time"},
@@ -89,6 +99,7 @@ router.get('/', function(req, res) {
         console.log('Analytics page analytics');
         console.log(data);
         var header_image = "/images/repo/petcare-large.jpg";
+        let condition = req.query;
         res.render('analytics', { title: 'Analytics' ,analytics,condition,header_image,user});
     });
   }
@@ -198,9 +209,7 @@ router.get('/pets/', function(req, res) {
     _pet.aggregate(
       [{ 
         $match :{$and:  [conditions.neutered,conditions.keyword,conditions.category]}
-       },
-      // { $unwind : "$adoptions" },
-      // { $unwind :  "$favourited_by" },   
+       }, 
       {$lookup:
             {
               from: "pet_category",
