@@ -46,9 +46,6 @@ const mongobasics = {
           callback(result);
         }
       });
-
-      console.log("DB insertion.");
-      callback("DB insertion.");
   },
 
   updateone: function(collectionName, condition,object, callback) {

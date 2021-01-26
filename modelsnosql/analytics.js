@@ -7,18 +7,13 @@ const Schema = mongoose.Schema;
  */
 
 const AnalyticsSchema = new Schema({
-    _id:Number,
     name:{ type: String, default: '' },
+    url:{ type: String, default: '' },
     userID: {type: Number, ref: User},
-    neutered: { type: Number, default: 3 },
-    age_year: { type: Number, default: null },
-    age_month: { type: Number, default: null },
-    short_desc: { type: String, default: 3 },
-    description: { type: String, default: 3 },
+    pageID: {type: Number},
+    time: {type: Number},
     created_at:  { type: String, default: Date.now },
-    updated_at:  { type: String, default: Date.now },
-    profile_img_url:  { type: String, default: 3 }
-},{ collection: 'analytics' });
+},{ collection: 'analytics' },{_id:false});
 
 const Analytics = mongoose.model('analytics', AnalyticsSchema);
 
