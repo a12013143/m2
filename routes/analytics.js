@@ -111,53 +111,119 @@ router.get('/pets/', function(req, res) {
     userID=1;
   }
   var user = {ID:userID}
+  
   mongobasics.selectone("user",userID, function(data) {
     user = data[0];
-    console.log('user');
-    console.log(user);
-    condition={userID};    
-    _adoption.selectall("adoption",condition, function(data) {
-      if(user && data){
-        user.adoptions = data;
-        user.show_adoptions = user.adoptions.slice(0,3);
-        console.log('show_adoptions');
-        console.log(user.show_adoptions);
-      }      
-      
+    if(!user){
+      console.log("\nres.redirect('/register')\n");
+      res.redirect('/register');
+      return;
+    }
+
+    // HEADER peT ADOPTION REQUESTS
+
+    let condition={ownerID: userID};
+
+    mongobasics.selectall("pet",null,condition, function(data){
+      user.adoptions = [];
+
+      //Get pets to get adoptions
+      pets = data;
+      //Save pet adoptions to user.adoptions
+      if(data){
+        data.forEach(dataItem => {
+          if(dataItem.adoptions.length>0){ 
+            //set adoptions petname
+             let i = 0;
+              dataItem.adoptions.forEach(adoption => {
+              dataItem.adoptions[i].petName = dataItem.name;              
+              dataItem.adoptions[i].profile_img_url = dataItem.profile_img_url;
+              i++;
+            });
+            user.adoptions=user.adoptions.concat(dataItem.adoptions);
+          }
+        });
+      }
+
+      //user adoptions
+      user.show_adoptions= user.adoptions.slice(0,3);
+      console.log('user.show_adoptions');
+      console.log(user.show_adoptions);    
+
       // Get categories
-      mongobasics.selectall("pet_category" , function(data) {
+      var condition = {};
+      mongobasics.selectall("pet_category" , null ,condition,function(data) {
         categories = data;
         console.log('Pets page categories');
         console.log(data);
         renderHtmlAfterCategoriesLoad();
-      }, {});          
+      }, {}); 
+
     });
   });
 
   // Get pets by query data
   function renderHtmlAfterCategoriesLoad(){
-    var condition = {};
-    if(req.query.category){
-      condition.category = req.query.category;
-    }
+
+    let conditions = {};
+      
+    conditions.neutered={};
     if(req.query.neutered){
-      condition.neutered = req.query.neutered;
-    }
-    if(req.query.keyword){
-      condition.keyword = req.query.keyword;
+      conditions.neutered = {
+        neutered: {$eq: parseInt(req.query.neutered) }           
+      }
     }
 
-    console.log(condition);
-    console.log('condition');
-    
-    _pet.analytics("pet" , function(data) {
-      analytics = data;
-      console.log('Pet analytics page analytics');
-      console.log(analytics);
-      var header_image = "/images/repo/petcare-large.jpg";
-      res.render('petsanalytics', { title: 'Pets analytics' ,analytics,categories,condition,header_image,user});
-    }, condition);
+    conditions.category={};
+    if(req.query.category){
+      conditions.category = {
+        categoryID: {$eq: parseInt(req.query.category) }           
+      }
+    }
+
+    conditions.keyword={};
+    if(req.query.keyword){  
+      let tempcondition = new RegExp(req.query.keyword, "i");  
+      conditions.keyword ={
+        $or: [
+        {name:  tempcondition },
+        {short_desc:  tempcondition },
+        {description: tempcondition }
+      ]};
+    }
+
+    console.log("conditions");
+    console.log(conditions.keyword);
+   
+    _pet.aggregate(
+      [{ 
+        $match :{$and:  [conditions.neutered,conditions.keyword,conditions.category]}
+       },
+      { $unwind : "$adoptions" },
+      // { $unwind :  "$favourited_by" },     
+      {
+        $group:{
+        _id: {status:"$adoptions.status", categoryID : "$categoryID",favourited_by : "$favourited_by",
+        favourite:{ $cond: { if: {$ne: [ "$favourited_by", [] ]}, then: 'Yes', else: 0 } } },
+        fans:{ $sum:{$cond: { if: {$ne: [ "$favourited_by", [] ]}, then: 1, else: 0 } } },
+        adoptions:{$sum:1}        
+       }
+      } ],function(err,data) {
+
+       var analytics=data;
+       console.log('Analytics page analytics');
+       console.log(data);
+
+       let condition = req.query;
+       var header_image = "/images/repo/petcare-large.jpg";
+       res.render('petsanalytics', { title: 'Analytics' ,analytics,categories,condition,header_image,user});
+   });
+
+   
+
+
   }
+
 });
 
 

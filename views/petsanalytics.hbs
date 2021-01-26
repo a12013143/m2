@@ -56,34 +56,34 @@
               <table id="analytics-table" class="table align-items-center table-flush">
                 <thead class="thead-light">
                   <tr>
-                    <th scope="col" class="sort" data-sort="url"Adoptions</th>
-                    <th scope="col" class="sort" data-sort="visits">Adopters</th>
-                    <th scope="col" class="sort" data-sort="time">Favourite (Liked)</th>
-                    <th scope="col" class="sort" data-sort="visitors"> Favouriters </th>
+                    <th scope="col" class="sort" data-sort="adoptions"Adoptions</th>
+                    <th scope="col" class="sort" data-sort="adopters">Adopters</th>
+                    <th scope="col" class="sort" data-sort="favourite">Favourite (Liked)</th>
+                    <th scope="col" class="sort" data-sort="favourited_by"> Favouriters </th>
                      <th scope="col" class="sort" data-sort="status">Status</th>
                       <th scope="col" class="sort" data-sort="category">Category</th>                      
                   </tr>
                 </thead>
                 <tbody>
                   {{#each analytics}}
-                  <tr data-index="{{this.page_id}}">
+                  <tr>
                     <th scope="row">
                      {{this.adoptions}}
                     </th>
                     <td>
-                      {{this.adopters}}
+                      {{this._id.adopters}}
                     </td>
                     <td>
-                      {{this.favourite}}
+                      {{this._id.favourite}}
                     </td>
                     <td>
                       {{this.fans}}
                     </td>
                     <td>
-                      {{this.status}}
+                      {{this._id.status}}
                     </td>
                     <td>
-                      {{this.name}}
+                      {{this._id.categoryID}}
                     </td>
                   </tr>
                   {{/each}}
@@ -92,9 +92,6 @@
             </div>
           </div>
           </div>
-        {{#each analytics}}
-
-        {{/each}}
       </div>
     </div>
 
