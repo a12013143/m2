@@ -1,7 +1,7 @@
 var express = require('express');
-const connection = require('../confignosql/connection');
-const mongobasics = require('../confignosql/mongobasics');
-var _pet = require('../modelsnosql/pet.js');
+const connection = require('../config/connection');
+const mongobasics = require('../config/mongobasics');
+var _pet = require('../models/pet.js');
 var router = express.Router();
 
 // -- END TEST MYSQL, delete after --------------------------------

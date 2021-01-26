@@ -1,7 +1,7 @@
 var express = require('express');
-const mongobasics = require('../confignosql/mongobasics');
+const mongobasics = require('../config/mongobasics');
 var router = express.Router();
-var _pet = require('../modelsnosql/pet.js');
+var _pet = require('../models/pet.js');
 
 
 

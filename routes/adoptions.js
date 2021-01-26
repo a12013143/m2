@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var _pet = require('../modelsnosql/pet.js');
+var _pet = require('../models/pet.js');
 
-const mongobasics = require('../confignosql/mongobasics');
+const mongobasics = require('../config/mongobasics');
 
 
 /*# GET */

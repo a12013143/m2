@@ -1,8 +1,8 @@
 var express = require('express');
-const connection = require('../confignosql/connection');
-const mongobasics = require('../confignosql/mongobasics');
+const connection = require('../config/connection');
+const mongobasics = require('../config/mongobasics');
 var router = express.Router();
-var _article = require('../modelsnosql/article.js');
+var _article = require('../models/article.js');
 
 
 

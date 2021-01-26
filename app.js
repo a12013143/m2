@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var connection = require('./confignosql/connection');
+var connection = require('./config/connection');
 var indexRouter = require('./routes/index');
 var petsRouter = require('./routes/pets');
 var articlesRouter = require('./routes/articles');
@@ -12,7 +12,7 @@ var adoptionsRouter = require('./routes/adoptions');
 var analyticsRouter = require('./routes/analytics');
 var usersRouter = require('./routes/users');
 
-var mongobasics = require('./confignosql/mongobasics');
+var mongobasics = require('./config/mongobasics');
 
 var app = express();
 
