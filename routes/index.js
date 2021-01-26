@@ -107,18 +107,19 @@ router.get('/profile/:userId?', function(req, res, next) {
   user = {ID:userID}
   mongobasics.selectone("user",userID, function(data) {
     user = data[0];
+    if(!user){
+      console.log("\nres.redirect('/register')\n");
+      res.redirect('/register');
+      return;
+    }
+     
     console.log('user');
     console.log(user);
 
     let condition={ownerID: userID};
     mongobasics.selectall("pet",null,condition, function(data){
       user.adoptions = [];
-
-      // Save data to pets
-      // console.log('User pet data');
-      // console.log(data);
       pets = data;
-
       //Save pet adoptions to user.adoptions
       if(data){
         data.forEach(dataItem => {
@@ -127,6 +128,7 @@ router.get('/profile/:userId?', function(req, res, next) {
             //set adoptions petname
              let i = 0;
               dataItem.adoptions.forEach(adoption => {
+              dataItem.adoptions[i].petID = dataItem._id;
               dataItem.adoptions[i].petName = dataItem.name;
               dataItem.adoptions[i].pet_profile_img_url = dataItem.profile_img_url;
               dataItem.adoptions[i].profile_img_url = user.profile_img_url;
@@ -177,6 +179,11 @@ router.delete('/dropCollections', function(req, res, next) {
     res.status(200).json(data);
   });
 
+}); 
+
+/* Insert initial data*/
+router.get('/error', function(req, res, next) {
+  next(createError(404));
 }); 
 
 
