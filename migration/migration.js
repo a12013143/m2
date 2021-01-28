@@ -56,6 +56,8 @@ var migration = {
                 console.log("\nConnection start with mongo database");
 
                 let tableNames = await sqliteMigrate.getSqliteTableNames();
+                console.log({tableNames});
+                console.log(tableNames);
                 let tables = this.tables;          
 
                 //Migrate tables
@@ -88,7 +90,8 @@ var migration = {
                 let queryCount = Math.ceil(rowCount/limit) || 1;
 
                 for(let i = 0; i<queryCount; i++) {
-                    let tableData = await sqliteMigrate.getSqliteTableData(tableName,null, offset, limit);
+                    let condition= " LIMIT "+limit+" OFFSET "+offset+";"
+                    let tableData = await sqliteMigrate.getSqliteTableData(tableName,condition);
                     console.log('\nTable Data from sqlite');
                     console.log(tableData);
 
@@ -128,11 +131,12 @@ var migration = {
                                         let subTableName = subCollection.collection;
                                         let fieldName = subCollection.fieldName;
                                         let fieldId = subCollection.fieldId;
-                                        let condition = " WHERE "+fieldId+"="+ tableData[i].ID;
+                                        let condition = " WHERE "+fieldId+" = "+ tableData[i].ID;
+                                        condition+ " LIMIT "+limit+" OFFSET "+offset+";"
     
                                         console.log('Subcollection inserting for '+ tableName);
                                         
-                                        let subtableData = await sqliteMigrate.getSqliteTableData(subTableName,condition, offset, limit);
+                                        let subtableData = await sqliteMigrate.getSqliteTableData(subTableName,condition);
     
                                         
                                         // for (let i =0;i<subtableData.length;i++){

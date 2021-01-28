@@ -21,6 +21,8 @@ const sqliteMigrate = {
         return new Promise( (resolve, reject) => {
             let sql = "SELECT name FROM sqlite_master WHERE type = ?";
             let params = ["table"];
+            console.log('\nparams');
+            console.log(params);
             this.sqlitedb.all(sql, params, (err, rows) => {
                 if(err) {
                     reject(err);
@@ -34,14 +36,22 @@ const sqliteMigrate = {
 
     getRowCount: function (tableName) {
         return new Promise( (resolve, reject) => {
-            let sql = "SELECT COUNT(*) AS COUNT FROM ?";
-            let params = [tableName];
-            this.sqlitedb.run(sql, params, (err, result) => {
+            let sql = "SELECT COUNT(*) AS ct FROM "+tableName;
+            console.log('\nSQL');
+            console.log(sql);
+            let params = [""+tableName];
+            console.log('\nparams');
+            console.log(params);
+            this.sqlitedb.all(sql, [], (err, result) => {
                 if(err) {
+                    console.log('\nerr');
+                    console.log(err);
                     reject(err);
                 }
                 else {
-                    resolve(result.COUNT);
+                    console.log('\nresult');
+                    console.log(result);
+                    resolve(result[0].ct);
                 }
             });
         });
@@ -50,13 +60,13 @@ const sqliteMigrate = {
     getSqliteTableData: function (tableName, condition,offset, limit) {
         return new Promise( (resolve, reject) => {
             let sql = "SELECT * FROM " + tableName ;
+            
             if(condition){
                 sql+=condition;
             }
             
-            sql+= " LIMIT ? OFFSET ?";
             let params = [limit, offset];
-            this.sqlitedb.all(sql, params, (err, rows) => {
+            this.sqlitedb.all(sql, [], (err, rows) => {
                 if(err) {
                     reject(err);
                 }
