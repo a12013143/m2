@@ -1,29 +1,16 @@
 // Connect to SQLite
 const mongoose = require("mongoose");
-const User = require("../models/user");
-const Pet = require("../models/pet");
-const PetCategory = require("../models/pet_category");
-const Article = require("../models/article");
-const ArticleCat = require("../models/article_cat");
-const Analytics = require("../models/analytics");
 const migration = require("../migration/migration.js");
 
 
-
 // var url = "mongodb://localhost:27017/mydb";
-var url = "mongodb://localhost:27017/mydb";
+var url = "mongodb://db:27017/mydb";
 mongoose.set('useNewUrlParser', true);
 mongoose.connect(url, function(err, db) {
   if (err) throw err;
   console.log("Mongo connected!");
 });
 
-// (async function() {
-//   // let url = "mongodb://localhost:27017/mydb"
-//   let sqlitePath = "./data/db.db";
-//   await migration.migrate(sqlitePath, url);
-//   console.log('OVER');
-// })();
 
 
 const connection = {
