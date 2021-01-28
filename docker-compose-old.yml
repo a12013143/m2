@@ -2,10 +2,9 @@ version: '3.9'
 services:
   web:
     image: imse_m3
-    container_name: web_service_m3
+    container_name: web_service
     volumes:
       - nodes:/node_modules/
-      - db_data:/data/
     build: .
     ports:
       - '3000:3000' 
@@ -25,16 +24,13 @@ services:
     #networks:
       #- app-network
     volumes: 
-      - m3_data:/data/
+      - db_data:/data/
     #restart: always
-
 
 #networks:
   #app-network:
     #driver: bridge
     
 volumes:
-    m3_data: {}
+    db_data: {}
     nodes: {}
-    db_data:
-      external: true
