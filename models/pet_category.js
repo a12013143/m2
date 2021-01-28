@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
  */
 
 const PetCategorySchema = new Schema({
-    // _id:Number,
+    ID:{ type: Number, default: '' },
     name:{ type: String, default: '' },
     description: { type: String, default: 3 }
 },{ collection: 'pet_category' });

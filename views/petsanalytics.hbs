@@ -16,7 +16,7 @@
                 <select class="form-control" id="input-category" name="category">
                   <option></option>
                   {{#each categories}}                     
-                     <option  {{#eq this._id ../condition.category}} selected {{/eq}}  value="{{this._id}}">{{this.name}}</option>
+                     <option  {{#eq this.ID ../condition.category}} selected {{/eq}}  value="{{this.ID}}">{{this.name}}</option>
                   {{/each}}
                 </select>
               </div>
@@ -71,19 +71,19 @@
                      {{this.adoptions}}
                     </th>
                     <td>
-                      {{this._id.adopters}}
+                      {{this.ID.adopters}}
                     </td>
                     {{!-- <td>
                       {{this.favourite}}
                     </td> --}}
                     <td>
-                      {{this._id.fans}}
+                      {{this.ID.fans}}
                     </td>
                     <td>
-                      {{this._id.status}}
+                      {{this.ID.status}}
                     </td>
                     <td>
-                      {{this._id.category}}
+                      {{this.ID.category}}
                     </td>
                   </tr>
                   {{/each}}

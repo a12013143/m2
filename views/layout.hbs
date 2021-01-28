@@ -132,7 +132,7 @@
                 <!-- List group -->
                 <div class="list-group list-group-flush">
                   {{#each user.show_adoptions}}
-                  <a href="/profile/?showAdoptions=1&userId={{../user._id}}#{{this._id}}" class="list-group-item list-group-item-action">
+                  <a href="/profile/?showAdoptions=1&userId={{../user.ID}}#{{this.ID}}" class="list-group-item list-group-item-action">
                     <div class="row align-items-center">
                       <div class="col ml--2">
                         <div class="d-flex justify-content-between align-items-center">
@@ -150,7 +150,7 @@
                   {{/each}}
                 </div>
                 <!-- View all -->
-                <a href="/profile/?showAdoptions=1&userId={{user._id}}" class="dropdown-item text-center text-primary font-weight-bold py-3">View all</a>
+                <a href="/profile/?showAdoptions=1&userId={{user.ID}}" class="dropdown-item text-center text-primary font-weight-bold py-3">View all</a>
               </div>
             </li>
           </ul>
@@ -170,7 +170,7 @@
                 <div class="dropdown-header noti-title">
                   <h6 class="text-overflow m-0">Welcome!</h6>
                 </div>
-                <a href="/profile/?userId={{user._id}}" class="dropdown-item"> 
+                <a href="/profile/?userId={{user.ID}}" class="dropdown-item"> 
                   <i class="ni ni-single-02"></i>
                   <span>My profile</span>
                 </a>
@@ -194,9 +194,9 @@
         <!-- Mask -->
         <span class="mask bg-gradient-default opacity-8"></span>
         <form id="page-data">
-          <input type="hidden" name="userID" value="{{user._id}}"/>
-          <input type="hidden" name="pageID" value="{{#if pet._id}}{{pet._id}}{{else}}{{article._id}}{{/if}}"/>
-          <input type="hidden" name="article_id" value="{{article._id}}"/>
+          <input type="hidden" name="userID" value="{{user.ID}}"/>
+          <input type="hidden" name="pageID" value="{{#if pet.ID}}{{pet.ID}}{{else}}{{article.ID}}{{/if}}"/>
+          <input type="hidden" name="articleID" value="{{article.ID}}"/>
         </form>        
         <!-- Header container -->
         <div class="separator separator-bottom separator-skew zindex-100">

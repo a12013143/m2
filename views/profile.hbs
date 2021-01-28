@@ -19,7 +19,7 @@
                 <p class="h5 font-weight-300">
                   <i class="ni location_pin mr-2"></i>{{user.phone}}
                 </p>
-                <p data-userid = "{{user.owner_id}}" class="h5 mt-4">
+                <p data-userid = "{{user.ownerID}}" class="h5 mt-4">
                   <i class="ni business_briefcase-24 mr-2"></i>{{user.email}}
                 </p>
               </div>
@@ -121,10 +121,10 @@
                       </thead>
                       <tbody class="list">
                         {{#each user.adoptions}}
-                        <tr id="{{this._id}}" data-adoption_id="{{this._id}}">
+                        <tr id="{{this.ID}}" data-adoptionID="{{this.ID}}">
                           <th scope="row">
                             <div class="media align-items-center">
-                              <a href="/pets/{{this._id}}?userId={{../user.id}}" class="avatar rounded-circle mr-3"
+                              <a href="/pets/{{this.ID}}?userId={{../user.id}}" class="avatar rounded-circle mr-3"
                               style ="background: url('{{this.pet_profile_img_url}}') center; background-size:contain;">
                                 {{!-- <img alt="Image placeholder" src="{{this.pet_profile_img_url}}"> --}}
                               </a>
@@ -161,9 +161,9 @@
                                 <i class="fas fa-ellipsis-v"></i>
                               </a>
                               <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                <form class="update-adoption" method="put" action="/pets/{{this.petID}}/adoptions/{{this._id}}"> 
+                                <form class="update-adoption" method="put" action="/pets/{{this.petID}}/adoptions/{{this.ID}}"> 
                                     <input type="hidden" readonly class="form-control" name="petID" value="{{this.petID}}">
-                                    <input type="hidden" readonly class="form-control" name="_id" value="{{this._id}}">
+                                    <input type="hidden" readonly class="form-control" name="ID" value="{{this.ID}}">
                                     <div class="form-group p-3 m-0">
                                     <select class="form-control" name="status">
                                       <option value = "Initiated">Initiated</option>

@@ -20,7 +20,7 @@ router.get('/', function(req, res) {
       conditions.category={};
       if(req.query.category){
         conditions.category = {
-          categoryID: new ObjectId(req.query.category.toString())          
+          categoryID: {$eq: req.query.category }           
         }
       }
       conditions.keyword={};
@@ -151,7 +151,7 @@ router.put('/:id', function(req, res) {
   console.log(req.body);
 
   let petId = req.params.id;
-  let condition = {"_id": petId};
+  let condition = {"ID": petId};
   var obj = req.body;
 
   mongobasics.updateone("pet" ,condition, obj, function(data) {
@@ -172,7 +172,7 @@ router.put('/:id', function(req, res) {
 router.delete('/:id', function(req, res) {
   
   let petId = req.params.id;
-  let condition = {_id:parseInt(petId)};
+  let condition = {ID:parseInt(petId)};
 
   console.log('Delete pet');
   mongobasics.delete("pet", condition, function(data){  

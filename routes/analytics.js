@@ -33,7 +33,7 @@ router.get('/', function(req, res) {
       } ,
       {
        $group:{
-       _id: "$url",
+       ID: "$url",
        time:{$sum:"$time"},
        created_at:{$max:"$created_at"},
        visits:{$sum:1}
@@ -97,13 +97,13 @@ router.get('/pets/', function(req, res) {
             {
               from: "pet_category",
               localField: "categoryID",
-              foreignField: "_id",
+              foreignField: "ID",
               as: "categories"
             }  },
       { $unwind :  "$categories" },
       {
         $group:{
-        _id: {
+        ID: {
           status:{$cond: { if: {$ne:["$adoptions",[]]},then:"$adoptions.status",else:"No adoption requests"}}, categoryID : "$categoryID",
           category : "$categories.name",
           fans:{$size: "$favourited_by"},
@@ -119,6 +119,8 @@ router.get('/pets/', function(req, res) {
        let condition = req.query;
        let user = res.user;
        let categories = res.categories;
+
+       console.log("Pet analytics");
 
        var header_image = "/images/repo/petcare-large.jpg";
       
@@ -143,6 +145,7 @@ router.post('/', function(req, res) {
         });
       }
     });
+
 });
 
 

@@ -8,10 +8,11 @@ var ArticleCategory = require('../models/article_cat.js');
  */
 
 const ArticleSchema = new Schema({
+    ID:{ type: Number, default: '' },
     // _id:Number,
     name:{ type: String, default: '' },
-    userID: {type: Schema.Types.ObjectId, ref: User},
-    categoryID :{type: Schema.Types.ObjectId, ref: ArticleCategory},
+    userID: {type: Number, ref: User},
+    categoryID :{type: Number, ref: ArticleCategory},
     short_desc: { type: String, default: 3 },
     description: { type: String, default: 3 },
     created_at:  { type: String, default: Date.now },

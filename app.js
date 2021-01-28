@@ -83,7 +83,7 @@ app.use(function (req, res, next) {
    }
 
   //  HEADER peT ADOPTION REQUESTS
-   let condition={ownerID: user._id};
+   let condition={ownerID: user.ID};
    mongobasics.selectall("pet",null,condition, function(data){
     console.log("user adoptions");
 

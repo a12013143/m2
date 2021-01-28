@@ -133,7 +133,7 @@ router.put('/:id', function(req, res) {
   console.log(req.body);
 
   let articleId = req.params.id;
-  let condition = {"_id": articleId};
+  let condition = {"ID": articleId};
   var obj = req.body;
 
   mongobasics.updateone("article" ,condition, obj, function(data) {
@@ -156,7 +156,7 @@ router.put('/:id', function(req, res) {
 router.delete('/:id', function(req, res) {
   
   let articleId = req.params.id;
-  let object = {_id:parseInt(articleId)};
+  let object = {ID:parseInt(articleId)};
 
   console.log('Delete article');
   mongobasics.delete("article", object, function(data){  

@@ -6,7 +6,7 @@
            <div class="alert alert-success m-4 d-none" role="alert">
               This is a success alert—check it out!
           </div>
-          <form id="add-adoption-form" role="form" method="post" action="/pets/{{pet._id}}/adoptions/">
+          <form id="add-adoption-form" role="form" method="post" action="/pets/{{pet.ID}}/adoptions/">
             <div class="modal-header">
               <h5 class="modal-title" id="adoptionModalLabel">Adoption request</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -15,8 +15,8 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <input type="hidden" name="userID" id="input-user_id" class="form-control" value="{{user._id}}">
-                    <input type="hidden" name="petID" id="input-pet_id" class="form-control" value="{{pet._id}}">
+                    <input type="hidden" name="userID" id="input-userID" class="form-control" value="{{user.ID}}">
+                    <input type="hidden" name="petID" id="input-petID" class="form-control" value="{{pet.ID}}">
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label class="form-control-label" for="input-name">Name</label>
@@ -95,7 +95,7 @@
                       <p class="description">Current applications</p>
                     </div>
                     <div class="p-0 m-0">
-                      <button type="button" class="btn-icon-clipboard btn-like" data-petID="{{pet._id}}" data-userID="{{user._id}}"  title="">
+                      <button type="button" class="btn-icon-clipboard btn-like" data-petID="{{pet.ID}}" data-userID="{{user.ID}}"  title="">
                           <i class="ni ni-favourite-28"></i>
                       </button>
                     </div>
@@ -129,15 +129,15 @@
               <div class="alert alert-success m-4 d-none" role="alert">
               This is a success alert—check it out!
               </div>
-              <form id="{{#if pet.name }}edit{{else}}add{{/if}}-pet-form" role="form" method="{{#if pet.name }}put{{else}}post{{/if}}" action="/pets/{{#if pet.name }}{{pet._id}}{{/if}}" enctype="multipart/form-data">
+              <form id="{{#if pet.name }}edit{{else}}add{{/if}}-pet-form" role="form" method="{{#if pet.name }}put{{else}}post{{/if}}" action="/pets/{{#if pet.name }}{{pet.ID}}{{/if}}" enctype="multipart/form-data">
                 <div class="card-header">
                   <div class="row align-items-center">
                     <div class="col-8">
                       <h3 class="mb-0">{{#eq pet.new 0}}Fill profile info{{/eq}}{{#gt pet.new 0}}Edit profile{{/gt}} </h3>
                     </div>
                     <div class="col-4 text-right">
-                       {{#gt pet.new 0}}<input id="pet-id" name="_id" type="hidden" value="{{pet._id}}">{{/gt}}
-                        <input id="user-id" name="ownerID" type="hidden" value="{{#gt pet.new 0}}{{pet.ownerID}}{{/gt}}{{#eq pet.new 0}}{{user._id}}{{/eq}}">
+                       {{#gt pet.new 0}}<input id="pet-id" name="ID" type="hidden" value="{{pet.ID}}">{{/gt}}
+                        <input id="user-id" name="ownerID" type="hidden" value="{{#gt pet.new 0}}{{pet.ownerID}}{{/gt}}{{#eq pet.new 0}}{{user.ID}}{{/eq}}">
                       {{!-- <input type="checkbox" class="form-control-input" id="input-publish"/> --}}
                       {{!-- <label class="form-control-label" for="input-publish">Publish</label> --}}
                       <button type="submit" class="btn btn-primary">Save</button>
@@ -166,7 +166,7 @@
                             <label class="form-control-label" for="input-category">Category</label>
                             <select name="categoryID" type="text" id="input-category" class="form-control">
                               {{#each categories}}
-                              <option {{#eq ../pet.categoryID this._id}} selected {{/eq}} value="{{this._id}}">{{this.name}}</option>
+                              <option {{#eq ../pet.categoryID this.ID}} selected {{/eq}} value="{{this.ID}}">{{this.name}}</option>
                               {{/each}}
                             </select>
                           </div>

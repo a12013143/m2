@@ -94,7 +94,7 @@ var migration = {
                         tableData.forEach(row => {
                             // If table contains foreign keys, replace those with new corresponding generated ids
                             // using te mapIds array where we save old and new ids for each table to collection created.
-                            // this.mapRefIds(table,row);                         
+                            this.mapRefIds(table,row);                         
                          });
 
                          console.log('Table:'+tableName);
@@ -113,8 +113,8 @@ var migration = {
                              for (let i =0;i<tableData.length;i++){
 
                                 //Save mapping of new generated IDs to old IDS
-                                //  var mapId = {oldId:tableData[i].ID,newId:data[i].ID};
-                                //  thisObj.mapIds.push(mapId);                             
+                                 var mapId = {oldId:tableData[i].ID,newId:data[i]._id};
+                                 thisObj.mapIds.push(mapId);                             
                             
                                 if(table.subCollection)
                                 {
@@ -128,19 +128,18 @@ var migration = {
                                     let subtableData = await sqliteMigrate.getSqliteTableData(subTableName,condition, offset, limit);
 
                                     
-                                    // for (let i =0;i<subtableData.length;i++){
-                                    //     thisObj.mapRefIds(table.subCollection,subtableData[i]);
-                                    // }
+                                    for (let i =0;i<subtableData.length;i++){
+                                        thisObj.mapRefIds(table.subCollection,subtableData[i]);
+                                    }
                                     
                                      mongoMigrate.insertIntoSubCollection(subtableData,tableName,fieldName,data[i]._id,function(data){
                                      console.log('Inserted data');
                                      console.log("Migrating " + tableName + " completed");                            
                                     
-                                    //  for (let i =0;i<data.length;i++){
-                                    //      var mapId = {oldIs:tableData[i].ID,newId:data[i].ID};
-                                    //      thisObj.mapIds.push(mapId);                                
-                                    //  }
-                                });
+                                     for (let i =0;i<data.length;i++){
+                                         var mapId = {oldIs:tableData[i].ID,newId:data[i]._id};
+                                         thisObj.mapIds.push(mapId);                                
+                                     }});
                                 
                                 }
                             }
@@ -155,17 +154,17 @@ var migration = {
                 reject(err);
             }
     },
-    // mapRefIds:function(table,row){
-    //     if(table.refIdFields){
-    //         table.refIdFields.forEach(refIdField => {
-    //             let oldId = row[refIdField];
-    //             let mapId = this.mapIds.find(element => element.oldId = oldId);
-    //             if(mapId){
-    //                 row[refIdField]= mapId.newId;
-    //             }
-    //         });
-    //     } 
-    // }
+    mapRefIds:function(table,row){
+        if(table.refIdFields){
+            table.refIdFields.forEach(refIdField => {
+                let oldId = row[refIdField];
+                let mapId = this.mapIds.find(element => element.oldId = oldId);
+                if(mapId){
+                    row[refIdField]= mapId.newId;
+                }
+            });
+        } 
+    }
 }
 
 

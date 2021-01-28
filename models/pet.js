@@ -8,6 +8,7 @@ const Schema = mongoose.Schema;
  */
 
 const PetSchema = new Schema({
+    ID:{ type: Number, default: '' },
     // _id:Number,
     name:{ type: String, default: '' },
     address: { type: String, default: '' },
@@ -19,9 +20,9 @@ const PetSchema = new Schema({
     created_at:  { type: String, default: Date.now },
     updated_at:  { type: String, default: Date.now },
     profile_img_url:  { type: String, default: 3 },
-    categoryID :{type: Schema.Types.ObjectId, ref: PetCategory},
-    ownerID :{type: Schema.Types.ObjectId, ref: User},
-    favourited_by: [{type: Schema.Types.ObjectId, ref: User}],   
+    categoryID :{type: Number},
+    ownerID :{type: Number, ref: User},
+    favourited_by: [{type: Number, ref: User}],   
     adoptions: [new mongoose.Schema(
         {
             // _id:Number,

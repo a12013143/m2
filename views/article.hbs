@@ -39,15 +39,15 @@
               <div class="alert alert-success m-4 d-none" role="alert">
               This is a success alert—check it out!
               </div>
-              <form id="{{#if article.name }}edit{{else}}add{{/if}}-article-form" role="form" method="{{#if article.name }}put{{else}}post{{/if}}" action="/articles/{{#if article.name }}{{article._id}}{{/if}}" enctype="multipart/form-data">
+              <form id="{{#if article.name }}edit{{else}}add{{/if}}-article-form" role="form" method="{{#if article.name }}put{{else}}post{{/if}}" action="/articles/{{#if article.name }}{{article.ID}}{{/if}}" enctype="multipart/form-data">
                 <div class="card-header">
                   <div class="row align-items-center">
                     <div class="col-8">
                        <h3 class="mb-0">{{#eq article.new 0}}Fill article info{{/eq}}{{#gt article.new 0}}Edit article{{/gt}} </h3>
                     </div>
                     <div class="col-4 text-right">
-                      {{#gt article.new 0}}<input id="article-id" name="_id" type="hidden" value="{{article._id}}">{{/gt}}
-                     <input id="user-id" name="userID" type="hidden" value="{{#gt article.new 0}}{{article.userID}}{{/gt}}{{#eq article.new 0}}{{user._id}}{{/eq}}">
+                      {{#gt article.new 0}}<input id="article-id" name="ID" type="hidden" value="{{article.ID}}">{{/gt}}
+                     <input id="user-id" name="userID" type="hidden" value="{{#gt article.new 0}}{{article.userID}}{{/gt}}{{#eq article.new 0}}{{user.ID}}{{/eq}}">
                       {{!-- <input type="checkbox" class="form-control-input" name="publish" id="input-publish"/> --}}
                       {{!-- <label class="form-control-label" for="input-publish">Publish</label> --}}
                       <button type="submit" class="btn btn-primary">Save</button>
@@ -76,7 +76,7 @@
                             <label class="form-control-label" for="input-category">Category</label>
                             <select name="categoryID" type="text" id="input-category" class="form-control">
                               {{#each categories}}
-                              <option {{#eq ../article.categoryID this._id}} selected {{/eq}} value="{{this._id}}">{{this.name}}</option>
+                              <option {{#eq ../article.categoryID this.ID}} selected {{/eq}} value="{{this.ID}}">{{this.name}}</option>
                               {{/each}}
                             </select>
                           </div>

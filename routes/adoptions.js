@@ -26,7 +26,7 @@ router.put('/', function(req, res) {
   delete(req.body.petID);
   let adoption = req.body;
 
-  let conditions = {_id:petID,'adoptions.userID': { $ne: userID }, 'adoptions.status': { $ne: "Approved" }};
+  let conditions = {ID:petID,'adoptions.userID': { $ne: userID }, 'adoptions.status': { $ne: "Approved" }};
   let update =  { $push: { adoptions:adoption}}
 
   console.log(" findOneAndUpdate conditions");
@@ -65,7 +65,7 @@ router.put('/:id', function(req, res) {
   let adoptionId = req.params.id;
   let status = req.body.status;
 
-  let conditions = {"_id":petId, "adoptions._id":adoptionId};
+  let conditions = {"ID":petId, "adoptions.ID":adoptionId};
   let update =  { $set: { "adoptions.$.status":status }}
 
   console.log(" findOneAndUpdate conditions");

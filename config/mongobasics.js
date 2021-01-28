@@ -19,12 +19,12 @@ const mongobasics = {
           };
         console.log("DB select all query.");
         callback(result);
-    }).limit(limit).sort({_id: 'descending'});
+    }).limit(limit).sort({ID: 'descending'});
     
   },
 
   selectone: function(collectionName, id, callback) {
-      mongoose.model(collectionName).find({_id: id },function(err, result) {
+      mongoose.model(collectionName).find({ID: id },function(err, result) {
           if (err) {
               console.log(err);
               return err;
@@ -77,7 +77,7 @@ const mongobasics = {
 
 
   getmaxid: function(collectionName, callback) {
-      let result = db.collection(collectionName).find({}).sort({"_id":-1}).limit(1);
+      let result = db.collection(collectionName).find({}).sort({"ID":-1}).limit(1);
       callback(result);
   },
 
