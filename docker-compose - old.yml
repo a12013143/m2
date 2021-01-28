@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  nodejs_mongo_docker:
+    image: nodejs_mongo_docker
+    # container_name: web_service
+    volumes:
+      # - db_data:/data/
+      - nodes:/node_modules/
+      - .:/app
+    build: .
+    environment:
+      NODE_ENV: development
+    ports:
+      - 3000:3000
+    # restart: unless-stopped  
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes: 
+      - data:/data/db
+    
+volumes:
+    data:
+    db_data: {}
+    nodes: {}
+   
+

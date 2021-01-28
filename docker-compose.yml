@@ -1,28 +1,36 @@
 version: '3.9'
 services:
-  nodejs_mongo_docker:
-    image: nodejs_mongo_docker
-    # container_name: web_service
+  web:
+    image: imse_m3
+    container_name: web_service
     volumes:
-      # - db_data:/data/
       - nodes:/node_modules/
-      - .:/app
     build: .
-    environment:
-      NODE_ENV: development
     ports:
-      - 3000:3000
-    # restart: unless-stopped  
-  mongodb:
+      - '3000:3000' 
+    #network_mode: host
+    depends_on: 
+      - db
+    #networks:
+      #- app-network
+    #restart: always
+    #environment: 
+      #- MONGO_URL=mongodb://db:27017/mydb
+  db:
     image: mongo:latest
+    #network_mode: host
     ports:
       - 27017:27017
+    #networks:
+      #- app-network
     volumes: 
-      - data:/data/db
+      - db_data:/data/
+    #restart: always
+
+#networks:
+  #app-network:
+    #driver: bridge
     
 volumes:
-    data:
     db_data: {}
     nodes: {}
-   
-

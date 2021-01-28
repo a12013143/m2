@@ -51,7 +51,7 @@ var migration = {
                 await mongoMigrate.openMongoDb(mongoUrl);
                 console.log("\nConnection start with mongo database");
 
-                //let tableNames = await sqliteMigrate.getSqliteTableNames();
+                let tableNames = await sqliteMigrate.getSqliteTableNames();
                 let tables = this.tables;          
 
                 //Migrate tables
@@ -66,7 +66,7 @@ var migration = {
                     console.log("\nMigration completed for the table :" + tableName,);
 
                 }
-                resolve();
+                // resolve();
             }
             catch(err) {
                 console.log("\nError in migration", err);
@@ -85,28 +85,22 @@ var migration = {
 
                 for(let i = 0; i<queryCount; i++) {
                     let tableData = await sqliteMigrate.getSqliteTableData(tableName,null, offset, limit);
-
-                    console.log('TEST');
+                    console.log('\nTable Data from sqlite');
+                    console.log(tableData);
 
                     if(tableData && tableData.length) {
-
-                      
 
                         // Replace reference fields ids to new generated ids                       
                         tableData.forEach(row => {
                             // If table contains foreign keys, replace those with new corresponding generated ids
                             // using te mapIds array where we save old and new ids for each table to collection created.
-                            this.mapRefIds(table,row);
-                         
+                            this.mapRefIds(table,row);                         
                          });
 
                          console.log('Table:'+tableName);
                          console.log('this.mapIds');
                          console.log(this.mapIds);
                          
-                         
-  
-                    
                          var thisObj = this;
                          mongoMigrate.insertIntoCollection(tableData,tableName, async function(data){
                              console.log('Inserted data');
@@ -127,20 +121,13 @@ var migration = {
                                     let condition = " WHERE "+fieldId+"="+ tableData[i].ID;
 
                                     console.log('Subcollection inserting for '+ tableName);
-                                    console.log(condition);
-                                    console.log(tableData[i].ID);
                                     
                                     let subtableData = await sqliteMigrate.getSqliteTableData(subTableName,condition, offset, limit);
 
-                                  
                                     
                                     for (let i =0;i<subtableData.length;i++){
                                         thisObj.mapRefIds(table.subCollection,subtableData[i]);
                                     }
-
-                                    console.log("subtableData");
-                                    console.log(subtableData);
-                                
                                     
                                      mongoMigrate.insertIntoSubCollection(subtableData,tableName,fieldName,data[i]._id,function(data){
                                      console.log('Inserted data');

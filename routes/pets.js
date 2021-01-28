@@ -59,6 +59,14 @@ router.get('/', function(req, res) {
 /** GET by petID */
 router.get('/:id', function(req, res) {
 
+  if(req.params.id=="new"){
+    pet = {_id : "new", profile_img_url:"/images/pawprint-blue.png"};
+    var header_image = pet.profile_img_url;
+    let categories = res.categories;
+    let user = res.user;
+    res.render('pet', { title: 'Pets - New',categories,pet,header_image,user});
+  }
+
   var petId = req.params.id;
   console.log('Get pets get by petid');
   console.log(req.user);
@@ -87,16 +95,7 @@ router.get('/:id', function(req, res) {
     });
 });
 
- /** New pet view render*/
-router.get('/new', function(req, res) {
 
-    pet = {_id : 0, profile_img_url:"/images/pawprint-blue.png"};
-    var header_image = pet.profile_img_url;
-    let categories = res.categories;
-    let user = res.user;
-    res.render('pet', { title: 'Pets - New',categories,pet,header_image,user});
-
- });
 
 /** POST */
 router.post('/', function(req, res) {

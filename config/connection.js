@@ -9,7 +9,9 @@ const Analytics = require("../models/analytics");
 const migration = require("../migration/migration.js");
 
 
+// var url = "mongodb://localhost:27017/mydb";
 var url = "mongodb://localhost:27017/mydb";
+mongoose.set('useNewUrlParser', true);
 mongoose.connect(url, function(err, db) {
   if (err) throw err;
   console.log("Mongo connected!");

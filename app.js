@@ -26,6 +26,12 @@ hbs.registerHelper('eq', function( a, b ){
 	return (a == b) ? next.fn(this) : next.inverse(this);
 });
 
+//not equal
+hbs.registerHelper('neq', function( a, b ){
+	var next =  arguments[arguments.length-1];
+	return (a != b) ? next.fn(this) : next.inverse(this);
+});
+
 // greater than
 hbs.registerHelper('gt', function( a, b ){
 	var next =  arguments[arguments.length-1];
