@@ -136,15 +136,17 @@ router.post('/', function(req, res) {
   console.log(req.body);
   
     var vals = req.body;
-    mongobasics.insertone("analytics" , vals, function(data) {  
-      if (data){
-        res.status(200).json(data);
-      } else {      
-        res.status(500).json({
-          'message': 'Internal Error.'
-        });
+
+    _analytics.create(vals, function(err, result) {
+      if (err) {
+        console.log(err);
+        return err;
+      } else {
+        console.log(result);
       }
     });
+    
+
 
 });
 

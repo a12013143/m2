@@ -90,9 +90,12 @@ router.get('/:id', function(req, res) {
         if(pet){
           header_image = pet.profile_img_url;
           title = pet.name;
+          pet.favourited_by =  pet.favourited_by.length;
+          pet.applications = pet.adoptions.length;
         }
         let categories = res.categories;
         let user = res.user;
+
         pet.new=1;
         res.render('pet', { title: title,pet,categories,header_image,user});
       }
@@ -130,14 +133,23 @@ router.post('/', function(req, res) {
 /** PUT */
 router.put('/:id', function(req, res) {
 
-  console.log('req.body articles put');
+  console.log('req.body pet put');
   console.log(req.body);
 
   let petId = req.params.id;
   let condition = {"ID": petId};
-  var obj = req.body;
+  var update = req.body;
 
-  mongobasics.updateone("pet" ,condition, obj, function(data) {
+  
+  if(update.favourited_by){
+
+    console.log('update.favourited_by');
+    console.log(update.favourited_by);
+
+    update = { $push: { favourited_by:update.favourited_by}};
+  }
+
+  mongobasics.updateone("pet" ,condition, update, function(data) {
     console.log(data);
 
     if (data){

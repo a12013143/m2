@@ -204,6 +204,41 @@
 
         });
         
+
+
+        //-------------CRUD FAVOURITE------------------------------------------------//
+        //Add favourite
+        $('#add-favourite-form').on('submit', function(e) {
+            console.log(e);
+            console.log("TEST");
+            e.preventDefault();
+            
+            var data = objectifyForm($(this));
+            console.log(data);
+            
+            $.ajax({
+            url: "/pets/"+data.petID,
+            type: "PUT",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function(data, status) {
+                console.log(data);
+                $('.alert').removeClass('d-none').addClass('alert-success').text("Pet is favourite").show();
+                let nrLikes = parseInt($('#number-likes').text())+1;
+                $('#number-likes').text(nrLikes);
+                window.setTimeout(function(){
+                   $('.alert').addClass('d-none').removeClass('alert-success');
+                },1500);
+            },
+            error: function(error) {
+                // console.log(error);
+                // $('.alert').removeClass('d-none').addClass('alert-danger').text().show();
+                // window.setTimeout(function(){
+                //    $('.alert').addClass('d-none').removeClass('alert-danger');
+                // },1500);
+            }
+            });
+        });
         
 
 

@@ -9,9 +9,8 @@ const Schema = mongoose.Schema;
 
 
 const AnalyticsSchema = new Schema({
-    ID:{ type: Number, default: '' },
+    // ID:{ type: Number, default: '' },
     //_id:Number,
-    name:{ type: String, default: '' },
     url:{ type: String, default: '' },
     userID: {type:Number, default: null},
     pageID: {type: Number, default: null},

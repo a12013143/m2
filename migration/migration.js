@@ -31,9 +31,13 @@ var migration = {
         {
             tableName:"pet",
             refIdFields:["categoryID","ownerID"],
-            subCollection:{
+            subCollection:[{
                 collection:"adoption", fieldName:"adoptions", fieldId:"petID",
-                refIdFields:["userID"]}
+                refIdFields:["userID"]},
+                // {
+                //     collection:"favourite", fieldName:"favourited_by", fieldId:"petID",
+                //     refIdFields:["userID"]}
+            ]
         }              
     ],
     migrate:
@@ -118,29 +122,36 @@ var migration = {
                             
                                 if(table.subCollection)
                                 {
-                                    let subTableName = table.subCollection.collection;
-                                    let fieldName = table.subCollection.fieldName;
-                                    let fieldId = table.subCollection.fieldId;
-                                    let condition = " WHERE "+fieldId+"="+ tableData[i].ID;
+                                    for (let i = 0; i< table.subCollection.length;i++) {
 
-                                    console.log('Subcollection inserting for '+ tableName);
-                                    
-                                    let subtableData = await sqliteMigrate.getSqliteTableData(subTableName,condition, offset, limit);
+                                        subCollection= table.subCollection[i];
+                                        let subTableName = subCollection.collection;
+                                        let fieldName = subCollection.fieldName;
+                                        let fieldId = subCollection.fieldId;
+                                        let condition = " WHERE "+fieldId+"="+ tableData[i].ID;
+    
+                                        console.log('Subcollection inserting for '+ tableName);
+                                        
+                                        let subtableData = await sqliteMigrate.getSqliteTableData(subTableName,condition, offset, limit);
+    
+                                        
+                                        // for (let i =0;i<subtableData.length;i++){
+                                        //     thisObj.mapRefIds(subCollection,subtableData[i]);
+                                        // }
+                                        
+                                         mongoMigrate.insertIntoSubCollection(subtableData,tableName,fieldName,data[i]._id,function(data){
+                                         console.log('Inserted data');
+                                         console.log("Migrating " + tableName + " completed");                            
+                                        
+                                        //  for (let i =0;i<data.length;i++){
+                                        //      var mapId = {oldIs:tableData[i].ID,newId:data[i].ID};
+                                        //      thisObj.mapIds.push(mapId);                                
+                                        //  }
+                                    });
+                                        
+                                    }
 
-                                    
-                                    // for (let i =0;i<subtableData.length;i++){
-                                    //     thisObj.mapRefIds(table.subCollection,subtableData[i]);
-                                    // }
-                                    
-                                     mongoMigrate.insertIntoSubCollection(subtableData,tableName,fieldName,data[i]._id,function(data){
-                                     console.log('Inserted data');
-                                     console.log("Migrating " + tableName + " completed");                            
-                                    
-                                    //  for (let i =0;i<data.length;i++){
-                                    //      var mapId = {oldIs:tableData[i].ID,newId:data[i].ID};
-                                    //      thisObj.mapIds.push(mapId);                                
-                                    //  }
-                                });
+                                   
                                 
                                 }
                             }

@@ -86,18 +86,22 @@
               <div class="row">
                 <div class="col">
                   <div class="card-profile-stats d-flex justify-content-center">
-                    {{!-- <div>
-                      <p class="heading">{{pet.favourites}}</p>
+                    <div>
+                      <p id="number-likes" class="heading">{{pet.favourited_by}}</p>
                       <p class="description">Likes</p>
-                    </div> --}}
+                    </div>
                     <div>
                       <p class="heading">{{pet.applications}}</p>
                       <p class="description">Current applications</p>
                     </div>
                     <div class="p-0 m-0">
-                      <button type="button" class="btn-icon-clipboard btn-like" data-petID="{{pet.ID}}" data-userID="{{user.ID}}"  title="">
+                       <form id="add-favourite-form" role="form" method="post" action="/pets/{{pet.ID}}/favourite/">
+                       <input type="hidden" name="favourited_by" id="input-userID" class="form-control" value="{{user.ID}}">
+                       <input type="hidden" name="petID" id="input-petID" class="form-control" value="{{pet.ID}}">
+                      <button type="submit" class="btn-icon-clipboard btn-like" data-petID="{{pet.ID}}" data-userID="{{user.ID}}"  title="">
                           <i class="ni ni-favourite-28"></i>
                       </button>
+                      </form>
                     </div>
                   </div>
                 </div>
