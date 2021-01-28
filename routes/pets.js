@@ -104,43 +104,26 @@ router.get('/:id', function(req, res) {
 
 /** POST */
 router.post('/', function(req, res) {
-  console.log('req.body pets post');
-  console.log(req.body);
+
+  // console.log('req.body analytics post');
+  // console.log(req.body);
   
-  let maxrowID = 0;
-  _pet.getmaxid(function(data){
-    maxrowID = (data[0].ID) + 1;
-    
     var vals = req.body;
-    var keys = Object.keys(req.body);
-    var i =0;
-    keys.forEach(function(key){
-      var str = ['name','address','short_desc','description','profile_img_url'];
-        if(!vals[key] && !str.includes(key) ){
-          vals[key] = 'null';
+
+      mongobasics.insertone("pet" , vals, function(data) {  
+        if (data){
+          res.status(200).json(data);
+        } else {      
+          res.status(500).json({
+            'message': 'Internal Error.'
+          });
         }
-    }) 
+      });
+    
 
-    let querytemp = '(' + maxrowID + ', ' + vals.ownerID +', "' + vals.name + '","' + vals.address + '", ' + vals.categoryID + ', ' + vals.neutered + ', ' + vals.age_year + ', ' + vals.age_month + ', "' + vals.short_desc + '", "' + vals.description + '","' + vals.created_at + '","' + vals.updated_at + '", ' + /*req.body.profile_img_url + '"'*/ '"/images/repo/ronald.jpg"';
-    console.log('querytemp')
-    console.log(querytemp)
-    mongobasics.insertone("pet" , querytemp, function(data) {
-      categories = data;
-      console.log('mongobasics.insertone');
-      console.log(data);
-  
-      if (data){
-        res.status(200).json(data);
-      } else {      
-        res.status(500).json({
-          'message': 'Internal Error.'
-        });
-      }
-    });
-
-  });
 
 });
+
 
 /** PUT */
 

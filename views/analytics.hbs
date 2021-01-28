@@ -56,15 +56,15 @@
                     <th scope="col" class="sort" data-sort="url">Page url</th>
                     <th scope="col" class="sort" data-sort="visits">Visits</th>
                     <th scope="col" class="sort" data-sort="time">Time</th>
-                    <th scope="col" class="sort" data-sort="visitors">Unique users</th>
+                    {{!-- <th scope="col" class="sort" data-sort="visitors">Unique users</th> --}}
                      <th scope="col" class="sort" data-sort="created_at">Recent visit date</th>
                   </tr>
                 </thead>
                 <tbody>
                   {{#each analytics}}
-                  <tr data-index="{{this.pageID}}">
+                  <tr data-index="{{this.page_id}}">
                     <th scope="row">
-                     {{this.ID}}
+                     {{this._id}}
                     </th>
                     <td>
                       {{this.visits}}
@@ -72,9 +72,9 @@
                     <td>
                       {{this.time}}
                     </td>
-                    <td>
+                    {{!-- <td>
                       {{this.visitors}}
-                    </td>
+                    </td> --}}
                     <td>
                       {{this.created_at}}
                     </td>

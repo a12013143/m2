@@ -28,12 +28,12 @@ router.get('/', function(req, res) {
 
    _analytics.aggregate(
      [
-      {
-        $match:conditions.created_at
-      } ,
+      // {
+      //   $match:conditions.created_at
+      // } ,
       {
        $group:{
-       ID: "$url",
+       _id: "$url",
        time:{$sum:"$time"},
        created_at:{$max:"$created_at"},
        visits:{$sum:1}
@@ -103,7 +103,7 @@ router.get('/pets/', function(req, res) {
       { $unwind :  "$categories" },
       {
         $group:{
-        ID: {
+        _id: {
           status:{$cond: { if: {$ne:["$adoptions",[]]},then:"$adoptions.status",else:"No adoption requests"}}, categoryID : "$categoryID",
           category : "$categories.name",
           fans:{$size: "$favourited_by"},
@@ -132,8 +132,8 @@ router.get('/pets/', function(req, res) {
 /** POST */
 router.post('/', function(req, res) {
 
-  // console.log('req.body analytics post');
-  // console.log(req.body);
+  console.log('req.body analytics post');
+  console.log(req.body);
   
     var vals = req.body;
     mongobasics.insertone("analytics" , vals, function(data) {  

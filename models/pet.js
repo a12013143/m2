@@ -19,14 +19,15 @@ const PetSchema = new Schema({
     description: { type: String, default: 3 },
     created_at:  { type: String, default: Date.now },
     updated_at:  { type: String, default: Date.now },
-    profile_img_url:  { type: String, default: 3 },
+    profile_img_url:  { type: String, default: "/images/petcare-large.jpg" },
     categoryID :{type: Number},
     ownerID :{type: Number, ref: User},
     favourited_by: [{type: Number, ref: User}],   
     adoptions: [new mongoose.Schema(
         {
             // _id:Number,
-            userID: {type:String},
+            ID:{ type: Number, default: '' },
+            userID: {type:Number},
             description: { type: String, default: '' },
             status:{ type: String, default: 'Initiated' },
             created_at: { type: String, default: Date.now },
@@ -34,6 +35,8 @@ const PetSchema = new Schema({
         })
     ]
 },{ collection: 'pet' });
+
+
 
 const Pet = mongoose.model('pet', PetSchema);
 

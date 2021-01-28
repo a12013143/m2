@@ -17,7 +17,7 @@ const ArticleSchema = new Schema({
     description: { type: String, default: 3 },
     created_at:  { type: String, default: Date.now },
     updated_at:  { type: String, default: Date.now },
-    profile_img_url:  { type: String, default: 3 }
+    profile_img_url:  { type: String, default:  "/images/petcare-large.jpg" }
 },{ collection: 'article' });
 
 const Article = mongoose.model('article', ArticleSchema);

@@ -32,7 +32,7 @@ router.put('/', function(req, res) {
   console.log(" findOneAndUpdate conditions");
   console.log(conditions);
   console.log(req.body);
-  console.log(update);
+  console.log(update);  
   
   _pet.findOneAndUpdate(conditions,update,function(err,data) {
     console.log('findOneAndUpdate data');
@@ -62,7 +62,7 @@ router.put('/:id', function(req, res) {
   console.log(req.body);
 
   let petId = req.body.petID;
-  let adoptionId = req.params.id;
+  let adoptionId = req.body.ID;
   let status = req.body.status;
 
   let conditions = {"ID":petId, "adoptions.ID":adoptionId};

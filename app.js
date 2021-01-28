@@ -85,27 +85,30 @@ app.use(function (req, res, next) {
   //  HEADER peT ADOPTION REQUESTS
    let condition={ownerID: user.ID};
    mongobasics.selectall("pet",null,condition, function(data){
+
     console.log("user adoptions");
 
      user.adoptions = [];
      //Save pet adoptions to user.adoptions
      if(data){
        data.forEach(dataItem => {
+        
          if(dataItem.adoptions.length>0){ 
-           //set adoptions petname
-            let i = 0;
+
              dataItem.adoptions.forEach(adoption => {
-             dataItem.adoptions[i].petName = dataItem.name;              
-             dataItem.adoptions[i].profile_img_url = dataItem.profile_img_url;
-             i++;
+              adoption.petID = dataItem.ID;
+              adoption.petName = dataItem.name;              
+              adoption.profile_img_url = dataItem.profile_img_url;
+              user.adoptions.push(adoption);     
+              
            });
-           user.adoptions=user.adoptions.concat(dataItem.adoptions);
          }
        });
        //user adoptions
        user.show_adoptions= user.adoptions.slice(0,3);
      }     
     
+     
      // Get categories
      var condition = {};
      res.categories=[];

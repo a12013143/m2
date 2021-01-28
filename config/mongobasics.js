@@ -37,14 +37,23 @@ const mongobasics = {
 
   insertone: function(collectionName, object,callback) {
       console.log("mongobasics.insertone");
-      mongoose.model(collectionName).create(object, function(err, result) {
-        if (err) {
-          console.log(err);
-          return err;
-        } else {
-          console.log(result);
-          callback(result);
+      this.getmaxid("pet",function(data){
+        if(!data){
+          data={ID:1}
         }
+        vals.ID = data.ID;
+        console.log('vals');
+        console.log(vals);
+     
+        mongoose.model(collectionName).create(object, function(err, result) {
+          if (err) {
+            console.log(err);
+            return err;
+          } else {
+            console.log(result);
+            callback(result);
+          }
+        });
       });
   },
 
