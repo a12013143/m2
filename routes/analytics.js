@@ -118,8 +118,10 @@ router.get('/pets/', function(req, res) {
 
        let condition = req.query;
        let user = res.user;
+       let categories = res.categories;
 
        var header_image = "/images/repo/petcare-large.jpg";
+      
        res.render('petsanalytics', { title: 'Analytics' ,analytics,categories,condition,header_image,user});
    });
 });

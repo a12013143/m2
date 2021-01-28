@@ -7,14 +7,15 @@ const Schema = mongoose.Schema;
  * Analytics Schema
  */
 
+
 const AnalyticsSchema = new Schema({
     //_id:Number,
     name:{ type: String, default: '' },
     url:{ type: String, default: '' },
-    userID: {type:Schema.Types.ObjectId, ref: User},
-    pageID: {type: Schema.Types.ObjectId, ref: Article},
+    userID: {type:String, default: null},
+    pageID: {type: String, default: null},
     time: {type: Number},
-    created_at:  { type: String, default: Date.now },
+    created_at:  { type: String},
 },{ collection: 'analytics' });
 
 const Analytics = mongoose.model('analytics', AnalyticsSchema);

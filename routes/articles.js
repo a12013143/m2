@@ -58,7 +58,15 @@ router.get('/', function(req, res) {
 });
 
  /** GET by articleId*/
-router.get('/:id([0-9]{1,10})', function(req, res) {
+router.get('/:id', function(req, res) {
+
+  if(req.params.id=="new"){
+    article = {new: 0, profile_img_url:"/images/repo/ronald.jpg"};
+    var header_image = article.profile_img_url;
+    let categories = res.article_categories;
+    let user = res.user;
+    res.render('article', { title: 'Articles - New',categories,article,header_image,user});  
+  }
 
   var articleId = req.params.id;
   console.log('Get articles get by articleId');
@@ -82,21 +90,12 @@ router.get('/:id([0-9]{1,10})', function(req, res) {
       }
       let categories = res.article_categories;
       let user = res.user;
+      article.new=10;
       res.render('article', { title: title,article,categories,header_image,user});
     }
   });
 });
 
- /** New article view render*/
-router.get('/new', function(req, res) {
-
-  article = {_id : 0, profile_img_url:"/images/ronald.png"};
-  var header_image = article.profile_img_url;
-  let categories = res.article_categories;
-  let user = res.user;
-  res.render('article', { title: 'Articles - New',categories,article,header_image,user});
-
- });
 
 
 /** POST */
@@ -128,7 +127,7 @@ router.post('/', function(req, res) {
 
 
 /** PUT */
-router.put('/:id([0-9]{1,10})', function(req, res) {
+router.put('/:id', function(req, res) {
 
   console.log('req.body articles put');
   console.log(req.body);
@@ -154,7 +153,7 @@ router.put('/:id([0-9]{1,10})', function(req, res) {
 });
 
 /** DELETE */
-router.delete('/:id([0-9]{1,10})', function(req, res) {
+router.delete('/:id', function(req, res) {
   
   let articleId = req.params.id;
   let object = {_id:parseInt(articleId)};

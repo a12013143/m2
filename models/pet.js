@@ -25,7 +25,7 @@ const PetSchema = new Schema({
     adoptions: [new mongoose.Schema(
         {
             // _id:Number,
-            userID: {type: Schema.Types.ObjectId, ref: User},
+            userID: {type:String},
             description: { type: String, default: '' },
             status:{ type: String, default: 'Initiated' },
             created_at: { type: String, default: Date.now },

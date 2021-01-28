@@ -104,10 +104,13 @@ var migration = {
                          var thisObj = this;
                          mongoMigrate.insertIntoCollection(tableData,tableName, async function(data){
                              console.log('Inserted data');
-                             console.log("Migrating " + tableName + " completed");                            
+                             console.log("Migrating " + tableName + " completed");        
+                             
+                             console.log("Count old table rows " + tableData.length + ".");  
+                             console.log("Count new table rows " + data.length + ".");  
                              
                              
-                             for (let i =0;i<data.length;i++){
+                             for (let i =0;i<tableData.length;i++){
 
                                 //Save mapping of new generated IDs to old IDS
                                  var mapId = {oldId:tableData[i].ID,newId:data[i]._id};

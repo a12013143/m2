@@ -2,6 +2,7 @@ var express = require('express');
 const mongobasics = require('../config/mongobasics');
 var router = express.Router();
 var _pet = require('../models/pet.js');
+var ObjectId = require('mongoose').Types.ObjectId; 
 
 
 
@@ -19,7 +20,7 @@ router.get('/', function(req, res) {
       conditions.category={};
       if(req.query.category){
         conditions.category = {
-          categoryID: {$eq: req.query.category }           
+          categoryID: new ObjectId(req.query.category.toString())          
         }
       }
       conditions.keyword={};
@@ -32,6 +33,9 @@ router.get('/', function(req, res) {
           {description: tempcondition }
         ]};
       }
+
+      console.log("\n\nconditions");
+      console.log(conditions);
       
       _pet.find({$and: [
         conditions.category,
@@ -60,7 +64,7 @@ router.get('/', function(req, res) {
 router.get('/:id', function(req, res) {
 
   if(req.params.id=="new"){
-    pet = {_id : "new", profile_img_url:"/images/pawprint-blue.png"};
+    pet = {new: 0, profile_img_url:"/images/pawprint-blue.png"};
     var header_image = pet.profile_img_url;
     let categories = res.categories;
     let user = res.user;
@@ -89,6 +93,7 @@ router.get('/:id', function(req, res) {
         }
         let categories = res.categories;
         let user = res.user;
+        pet.new=1;
         res.render('pet', { title: title,pet,categories,header_image,user});
       }
       

@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
   res.redirect('/profile?showAdoptions=1');
 });
 
-router.get('/:id([0-9]{1,10})', function(req, res) {
+router.get('/:id', function(req, res) {
   res.redirect('/profile?showAdoptions=1');
 });
 
@@ -56,7 +56,7 @@ router.put('/', function(req, res) {
 });
 
 /** Update adoption status */
-router.put('/:id([0-9]{1,10})', function(req, res) {
+router.put('/:id', function(req, res) {
 
   console.log('req.body adoptions put');
   console.log(req.body);
