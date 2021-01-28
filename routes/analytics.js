@@ -15,13 +15,13 @@ router.get('/', function(req, res) {
   var conditions={};
   conditions.created_at={};
 
-  // if(req.query.start_date){
-  //   conditions.created_at.$gte=new Date(req.query.start_date);
-  // }
+  if(req.query.start_date){
+    conditions.created_at.$gte=new Date(req.query.start_date);
+  }
 
-  // if(req.query.end_date){
-  //   conditions.created_at.$lte=new Date(req.query.end_date);
-  // }
+  if(req.query.end_date){
+    conditions.created_at.$lte=new Date(req.query.end_date);
+  }
 
   console.log("conditions");
   console.log(conditions);

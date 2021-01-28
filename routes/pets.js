@@ -57,7 +57,7 @@ router.get('/', function(req, res) {
 });
 
 /** GET by petID */
-router.get('/:id([0-9]{1,10})', function(req, res) {
+router.get('/:id', function(req, res) {
 
   var petId = req.params.id;
   console.log('Get pets get by petid');
@@ -141,7 +141,7 @@ router.post('/', function(req, res) {
 /** PUT */
 
 /** PUT */
-router.put('/:id([0-9]{1,10})', function(req, res) {
+router.put('/:id', function(req, res) {
 
   console.log('req.body articles put');
   console.log(req.body);
@@ -165,7 +165,7 @@ router.put('/:id([0-9]{1,10})', function(req, res) {
 });
 
 /** DELETE */
-router.delete('/:id([0-9]{1,10})', function(req, res) {
+router.delete('/:id', function(req, res) {
   
   let petId = req.params.id;
   let condition = {_id:parseInt(petId)};

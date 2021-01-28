@@ -13,6 +13,7 @@ var analyticsRouter = require('./routes/analytics');
 var usersRouter = require('./routes/users');
 
 var mongobasics = require('./config/mongobasics');
+var _user = require('./models/user');
 
 var app = express();
 
@@ -52,29 +53,35 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
 
-  var categories = [];  
-
-  // HEADER USER
- var userID = req.query.userId;
- if(!userID){
-   userID=1;
+ // HEADER USER
+ var userId = req.query.userId;
+ 
+ var user = {};
+ var condition = {};
+ if (userId){
+  condition = {ID:userId};
  }
- var user = {ID:userID}
- mongobasics.selectone("user",userID, function(data) {
-   user = data[0];
+ _user.findOne(condition, function(err,data) {
+
+    if (err) {
+      console.log(err);
+      return err;
+    };
+
+   user = data;
    if(!user){
-     console.log("\nres.redirect('/register')\n");
-     res.redirect('/register');
+    console.log("\nres.redirect('/register')\n");       
+    //  res.redirect('/register');  
+     next();
      return;
    }
-   // HEADER peT ADOPTION REQUESTS
 
-   let condition={ownerID: userID};
+  //  HEADER peT ADOPTION REQUESTS
+   let condition={ownerID: user._id};
    mongobasics.selectall("pet",null,condition, function(data){
-     user.adoptions = [];
+    console.log("user adoptions");
 
-     //Get pets to get adoptions
-     pets = data;
+     user.adoptions = [];
      //Save pet adoptions to user.adoptions
      if(data){
        data.forEach(dataItem => {
@@ -89,13 +96,14 @@ app.use(function (req, res, next) {
            user.adoptions=user.adoptions.concat(dataItem.adoptions);
          }
        });
-     }
-
-     //user adoptions
-     user.show_adoptions= user.adoptions.slice(0,3);
-
+       //user adoptions
+       user.show_adoptions= user.adoptions.slice(0,3);
+     }     
+    
      // Get categories
      var condition = {};
+     res.categories=[];
+     res.article_categories=[];
      mongobasics.selectall("pet_category" , null ,condition,function(data) {
        res.categories = data;
      }); 
@@ -105,20 +113,12 @@ app.use(function (req, res, next) {
     }); 
 
     res.user = user;
+    console.log("res");
+    console.log(user);
     next();
 
    });
- });
-
-
-  // Item.count({"author.id":req.user.id}, (err, itemCount)=>{
-  //    if(err){
-         
-  //    } else {
-  //       req.Count = JSON.stringify(itemCount);
-       
-  //    }
-  // });    
+ }); 
 });
 
 app.use('/', indexRouter);

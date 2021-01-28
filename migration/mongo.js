@@ -16,20 +16,33 @@ const mongoMigrate = {
         });
     },
     /* Insertion */
-    insertIntoCollection: function(domArray,collectionName) {
-        return new Promise( async (resolve, reject) => {
-            try {
-                // let result = await this.mongodb.collection(collectionName).insertMany(domArray);                
-                let result = await mongoose.model(collectionName).insertMany(domArray);
-                resolve({
-                    code : 200,
-                    message : "success"
-                });
-            }
-            catch(err) {
-                reject(err);
-            }
+    insertIntoCollection: function(domArray,collectionName,callback) {
+
+        // let result = await this.mongodb.collection(collectionName).insertMany(domArray);
+                        
+        mongoose.model(collectionName).insertMany(domArray,function(err,result){
+            if (err) {
+                console.log(err);
+                return err;
+              } else {
+                callback(result);
+              }
         });
+
+    },
+    insertIntoSubCollection: function(domArray,tableName,subCollectionName,_id,callback) {
+
+        // let result = await this.mongodb.collection(collectionName).insertMany(domArray);
+                        
+        mongoose.model(tableName).updateOne({_id:_id},{[subCollectionName]:domArray},function(err,result){
+            if (err) {
+                console.log(err);
+                return err;
+              } else {
+                callback(result);
+              }
+        });
+
     }
 
 }

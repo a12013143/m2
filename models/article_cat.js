@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
  */
 
 const ArticleCategorySchema = new Schema({
-    _id:Number,
+    // _id:Number,
     name:{ type: String, default: '' },
     description: { type: String, default: 3 }
 },{ collection: 'article_cat' });

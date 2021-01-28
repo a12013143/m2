@@ -47,9 +47,14 @@ const sqliteMigrate = {
         });
     }, 
 
-    getSqliteTableData: function (tableName, offset, limit) {
+    getSqliteTableData: function (tableName, condition,offset, limit) {
         return new Promise( (resolve, reject) => {
-            let sql = "SELECT * FROM " + tableName + " LIMIT ? OFFSET ?";
+            let sql = "SELECT * FROM " + tableName ;
+            if(condition){
+                sql+=condition;
+            }
+            
+            sql+= " LIMIT ? OFFSET ?";
             let params = [limit, offset];
             this.sqlitedb.all(sql, params, (err, rows) => {
                 if(err) {

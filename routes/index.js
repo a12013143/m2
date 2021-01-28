@@ -15,12 +15,15 @@ router.get('/', function(req, res, next) {
   // Get pets by query data
   let limit = 3;
   let condition={};
+  let pets=[];
   mongobasics.selectall("pet",limit,condition, function(data){
     pets = data;
-    // console.log('Latest 3 pets data');
-    // console.log(pets);
+    console.log('Latest 3 pets data');
+    console.log(pets);
     var header_image = "/images/repo/petcare-large.jpg";
     let user = res.user;
+    console.log("res.user");
+    console.log(user);
     let stats= {};
     res.render('index', { title: 'FosterPet - Home ' ,pets, stats,header_image,user});
   });
@@ -31,14 +34,14 @@ router.get('/', function(req, res, next) {
 
 /* GET login page. */
 router.get('/login', function(req, res, next) {
-  console.log('Login page - In developement!');
-  res.render('login', {title:'Login'});
+  console.log('Login page');
+  res.render('login', {title:'Login- In developement!','header':"no-header"});
 });
 
 /* GET register page. */
 router.get('/register', function(req, res, next) {
   console.log('Register page');
-  res.render('register', {title:'Register - In developement!'});
+  res.render('register', {title:'Register - In developement!','header':"no-header"});
 });
 
 /* GET profile page. */
